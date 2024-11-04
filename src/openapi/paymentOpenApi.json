@@ -1,0 +1,252 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "payment Service API",
+    "description": "This is the Rest API for the payment Service",
+    "license": {
+      "name": "Apache 2.0"
+    },
+    "version": "v0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8686",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/v1/payments/create-payment": {
+      "post": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "createPayment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invoices/create-invoice": {
+      "post": {
+        "tags": [
+          "invoice-controller"
+        ],
+        "operationId": "createInvoice",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payments": {
+      "get": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "getPayment",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invoices": {
+      "get": {
+        "tags": [
+          "invoice-controller"
+        ],
+        "operationId": "getPayment_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invoices/get-all-invoices": {
+      "get": {
+        "tags": [
+          "invoice-controller"
+        ],
+        "operationId": "getAllInvoices",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PaymentRequest": {
+        "type": "object",
+        "properties": {
+          "paymentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "PAYPAL",
+              "CREDIT_CARD",
+              "DEBIT_CARD",
+              "BITCOIN"
+            ]
+          },
+          "orderId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "orderReference": {
+            "type": "string"
+          },
+          "User": {
+            "$ref": "#/components/schemas/User"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastModifiedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isSuccessful": {
+            "type": "boolean"
+          }
+        }
+      },
+      "User": {
+        "required": [
+          "email",
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "InvoiceRequest": {
+        "type": "object",
+        "properties": {
+          "invoiceId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "paymentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "invoiceNumber": {
+            "type": "string"
+          },
+          "invoiceDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "InvoiceResponse": {
+        "type": "object",
+        "properties": {
+          "invoiceId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "paymentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "invoiceNumber": {
+            "type": "string"
+          },
+          "invoiceDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}

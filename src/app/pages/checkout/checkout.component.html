@@ -1,0 +1,52 @@
+<div class="container">
+  <h1>Checkout</h1>
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="userId">User ID</label>
+      <input type="text" id="userId" formControlName="userId" class="form-control" />
+      <div *ngIf="checkoutForm.get('userId')?.invalid && checkoutForm.get('userId')?.touched">
+        <small class="text-danger">User ID is required.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <!-- <label for="totalAmount">Total Amount</label>
+     <input type="text" id="totalAmount" formControlName="totalAmount" class="form-control" disabled />-->
+    </div>
+
+    <div class="form-group">
+      <label for="paymentMethod">Payment Method</label>
+      <select id="paymentMethod" formControlName="paymentMethod" class="form-control">
+        <option value="">Select Payment Method</option>
+        <option value="CREDIT_CARD">Credit Card</option>
+        <option value="PAYPAL">PayPal</option>
+        <!-- Add other payment methods as necessary -->
+      </select>
+      <div *ngIf="checkoutForm.get('paymentMethod')?.invalid && checkoutForm.get('paymentMethod')?.touched">
+        <small class="text-danger">Payment method is required.</small>
+      </div>
+    </div>
+
+    <h3>Products</h3>
+    <div formArrayName="products">
+      <!--<div *ngFor="let product of checkoutForm.get('products').controls; let i = index" [formGroupName]="i"> -->
+        <div class="form-group">
+          <label for="productId">Product ID</label>
+          <input type="text" id="productId" formControlName="productId" class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input type="number" id="quantity" formControlName="quantity" class="form-control" min="1" />
+    <!--      <div *ngIf="product.get('quantity').invalid && product.get('quantity').touched"> -->
+            <small class="text-danger">Quantity must be a positive number.</small>
+          </div>
+        </div>
+    <!-- </div>
+   </div> -->
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary" [disabled]="checkoutForm.invalid">Place Order</button>
+    </div>
+  </form>
+</div>

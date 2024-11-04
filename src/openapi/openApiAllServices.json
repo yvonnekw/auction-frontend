@@ -1,0 +1,425 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Address Service API",
+    "description": "This is the Rest API for the Address Service",
+    "license": {
+      "name": "Apache 2.0"
+    },
+    "version": "v0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8787",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/v1/addresses/create-address": {
+      "post": {
+        "tags": [
+          "address-controller"
+        ],
+        "operationId": "createAddress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/addresses/get-all-addresses": {
+      "get": {
+        "tags": [
+          "address-controller"
+        ],
+        "operationId": "getAllAddresses",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AddressResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddressRequest": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "street": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "isBillingAddress": {
+            "type": "boolean"
+          },
+          "isShippingAddress": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AddressResponse": {
+        "type": "object",
+        "properties": {
+          "addressId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "street": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "isBillingAddress": {
+            "type": "boolean"
+          },
+          "isShippingAddress": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}
+{
+"openapi": "3.0.1",
+"info": {
+"title": "OpenAPI definition",
+"version": "v0"
+},
+"servers": [
+{
+"url": "http://localhost:9797",
+"description": "Generated server url"
+}
+],
+"paths": {
+"/api/v1/orders/create-order": {
+"post": {
+"tags": [
+"order-controller"
+],
+"operationId": "createOrder",
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/OrderRequest"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+}
+},
+"400": {
+"description": "Bad Request",
+"content": {
+"*/*": {
+"schema": {
+"$ref": "#/components/schemas/ErrorResponse"
+}
+}
+}
+}
+}
+}
+},
+"/api/v1/orders/{order-id}": {
+"get": {
+"tags": [
+"order-controller"
+],
+"operationId": "findByOrderId",
+"parameters": [
+{
+"name": "order-id",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"$ref": "#/components/schemas/OrderResponse"
+}
+}
+}
+},
+"400": {
+"description": "Bad Request",
+"content": {
+"*/*": {
+"schema": {
+"$ref": "#/components/schemas/ErrorResponse"
+}
+}
+}
+}
+}
+}
+},
+"/api/v1/orders/get-all-orders": {
+"get": {
+"tags": [
+"order-controller"
+],
+"operationId": "findAllOrders",
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/OrderResponse"
+}
+}
+}
+}
+},
+"400": {
+"description": "Bad Request",
+"content": {
+"*/*": {
+"schema": {
+"$ref": "#/components/schemas/ErrorResponse"
+}
+}
+}
+}
+}
+}
+},
+"/api/v1/order-lines/order/{order-id}": {
+"get": {
+"tags": [
+"order-line-controller"
+],
+"operationId": "findAllByOrderId",
+"parameters": [
+{
+"name": "order-id",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer",
+"format": "int64"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"*/*": {
+"schema": {
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/OrderLineResponse"
+}
+}
+}
+}
+},
+"400": {
+"description": "Bad Request",
+"content": {
+"*/*": {
+"schema": {
+"$ref": "#/components/schemas/ErrorResponse"
+}
+}
+}
+}
+}
+}
+}
+},
+"components": {
+"schemas": {
+"ErrorResponse": {
+"type": "object",
+"properties": {
+"errorCode": {
+"type": "string"
+},
+"errorMessage": {
+"type": "string"
+}
+}
+},
+"OrderRequest": {
+"required": [
+"paymentMethod",
+"products"
+],
+"type": "object",
+"properties": {
+"orderId": {
+"type": "integer",
+"format": "int64"
+},
+"reference": {
+"type": "string"
+},
+"totalAmount": {
+"type": "number"
+},
+"paymentMethod": {
+"type": "string",
+"enum": [
+"PAYPAL",
+"CREDIT_CARD",
+"DEBIT_CARD",
+"BITCOIN"
+]
+},
+"userId": {
+"type": "integer",
+"format": "int64"
+},
+"products": {
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/PurchaseRequest"
+}
+}
+}
+},
+"PurchaseRequest": {
+"required": [
+"productId"
+],
+"type": "object",
+"properties": {
+"productId": {
+"type": "integer",
+"format": "int64"
+},
+"quantity": {
+"type": "number",
+"format": "double"
+}
+}
+},
+"OrderResponse": {
+"type": "object",
+"properties": {
+"orderId": {
+"type": "integer",
+"format": "int64"
+},
+"reference": {
+"type": "string"
+},
+"totalAmount": {
+"type": "number"
+},
+"paymentMethod": {
+"type": "string",
+"enum": [
+"PAYPAL",
+"CREDIT_CARD",
+"DEBIT_CARD",
+"BITCOIN"
+]
+},
+"userId": {
+"type": "integer",
+"format": "int64"
+}
+}
+},
+"OrderLineResponse": {
+"type": "object",
+"properties": {
+"orderLineId": {
+"type": "integer",
+"format": "int64"
+},
+"quantity": {
+"type": "number",
+"format": "double"
+}
+}
+}
+}
+}
+}
+

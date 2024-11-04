@@ -25,3 +25,9 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Run the open api command
+if you update your api, copy the api doc json and save it into a file under the openapi folder.
+Update the input section of the script for 'api-gen-...' in the package.json,  and then run the following script to generate the service for each service -
+
+`npm run api-gen-add`

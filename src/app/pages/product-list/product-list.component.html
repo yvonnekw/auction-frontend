@@ -1,0 +1,9 @@
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+<h2>Product List</h2>
+<ul>
+  <li *ngFor="let product of products">
+    {{ product.name }} - {{ product.price }} <!-- Update based on your product model -->
+  </li>
+</ul>
+

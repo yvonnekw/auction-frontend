@@ -1,0 +1,21 @@
+<div class="container">
+  <h1>Auction Products</h1>
+  <div class="row">
+    <div class="col-md-4" *ngFor="let product of products">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">{{ product.description }}</p>
+          <p class="card-text"><strong>Price: ${{ product.price }}</strong></p>
+
+          <div *ngIf="product.auction">
+            <button class="btn btn-primary" (click)="submitBid(product)">Submit a Bid</button>
+          </div>
+          <div *ngIf="product.buyNow">
+            <button class="btn btn-success" (click)="buyNow(product)">Buy It Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
