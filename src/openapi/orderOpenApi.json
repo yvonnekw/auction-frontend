@@ -17,6 +17,16 @@
           "order-controller"
         ],
         "operationId": "createOrder",
+        "parameters": [
+          {
+            "name": "X-Username",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -35,6 +45,36 @@
                 "schema": {
                   "type": "integer",
                   "format": "int64"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/orders": {
+      "get": {
+        "tags": [
+          "order-controller"
+        ],
+        "operationId": "getPayment",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -191,10 +231,6 @@
         ],
         "type": "object",
         "properties": {
-          "orderId": {
-            "type": "integer",
-            "format": "int64"
-          },
           "reference": {
             "type": "string"
           },
@@ -209,10 +245,6 @@
               "DEBIT_CARD",
               "BITCOIN"
             ]
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int64"
           },
           "products": {
             "type": "array",
@@ -259,10 +291,6 @@
               "DEBIT_CARD",
               "BITCOIN"
             ]
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int64"
           }
         }
       },

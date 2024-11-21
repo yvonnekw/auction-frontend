@@ -14,7 +14,7 @@ export interface Product {
   productName?: string;
   productSize?: string;
   quantity?: number;
-  sellerId?: number;
   sold?: boolean;
   startingPrice?: number;
+  username?: string;
 }

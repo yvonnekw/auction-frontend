@@ -11,12 +11,14 @@ import { RequestBuilder } from '../../request-builder';
 import { OrderRequest } from '../../models/order-request';
 
 export interface CreateOrder$Params {
+  'X-Username': string;
       body: OrderRequest
 }
 
 export function createOrder(http: HttpClient, rootUrl: string, params: CreateOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
   const rb = new RequestBuilder(rootUrl, createOrder.PATH, 'post');
   if (params) {
+    rb.header('X-Username', params['X-Username'], {});
     rb.body(params.body, 'application/json');
   }
 

@@ -11,12 +11,20 @@ import { RequestBuilder } from '../../request-builder';
 import { PaymentRequest } from '../../models/payment-request';
 
 export interface CreatePayment$Params {
+  'X-Username': string;
+  'X-FirstName': string;
+  'X-LastName': string;
+  'X-Email': string;
       body: PaymentRequest
 }
 
 export function createPayment(http: HttpClient, rootUrl: string, params: CreatePayment$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
   const rb = new RequestBuilder(rootUrl, createPayment.PATH, 'post');
   if (params) {
+    rb.header('X-Username', params['X-Username'], {});
+    rb.header('X-FirstName', params['X-FirstName'], {});
+    rb.header('X-LastName', params['X-LastName'], {});
+    rb.header('X-Email', params['X-Email'], {});
     rb.body(params.body, 'application/json');
   }
 

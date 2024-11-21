@@ -1,6 +1,6 @@
 <div class="container">
   <h1>Checkout</h1>
-  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+  <!--<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()"> -->
     <div class="form-group">
       <label for="userId">User ID</label>
       <input type="text" id="userId" formControlName="userId" class="form-control" />
@@ -48,5 +48,7 @@
     <div class="form-group">
       <button type="submit" class="btn btn-primary" [disabled]="checkoutForm.invalid">Place Order</button>
     </div>
-  </form>
+  <!--</form>-->
 </div>
+
+

@@ -1,1 +1,40 @@
-<p>submit-bid works!</p>
+<!-- submit-bid.component.html -->
+<div class="container">
+  <h2>Submit Your Bid</h2>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="product">
+    <h3>{{ product.productName }}</h3>
+    <p>Current Buy Now Price: {{ product.buyNowPrice | currency }}</p>
+
+    <form (ngSubmit)="onSubmit()" #bidForm="ngForm">
+      <div class="form-group">
+        <label for="bidAmount">Your Bid Amount</label>
+        <input
+          type="number"
+          id="bidAmount"
+          name="bidAmount"
+          class="form-control"
+          [(ngModel)]="bidAmount"
+          required
+          min="{{ product.buyNowPrice }}"
+          placeholder="Enter your bid"
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="!bidForm.form.valid">
+        Submit Bid
+      </button>
+    </form>
+  </div>
+
+  <div *ngIf="!product && !errorMessage">
+    Loading product details...
+  </div>
+</div>
+
+
+

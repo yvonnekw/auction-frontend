@@ -7,5 +7,4 @@ export interface OrderResponse {
   paymentMethod?: 'PAYPAL' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'BITCOIN';
   reference?: string;
   totalAmount?: number;
-  userId?: number;
 }

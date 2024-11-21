@@ -11,43 +11,114 @@
     }
   ],
   "paths": {
-    "/api/v1/products/create-product": {
-      "post": {
+    "/api/v1/categories/{id}": {
+      "get": {
         "tags": [
-          "product-controller"
+          "category-controller"
         ],
-        "operationId": "createProduct",
+        "operationId": "getCategoryById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "updateCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProductRequest"
+                "$ref": "#/components/schemas/Category"
               }
             }
           },
           "required": true
         },
         "responses": {
-          "201": {
-            "description": "Created",
+          "200": {
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/Category"
                 }
               }
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
-    "/api/v1/products/buy-now": {
+    "/api/v1/products/create-product": {
       "post": {
         "tags": [
           "product-controller"
         ],
-        "operationId": "buyNow",
+        "operationId": "createProduct",
+        "parameters": [
+          {
+            "name": "X-Username",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -65,6 +136,137 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/categories/create-category": {
+      "post": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "createCategory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bids/submit-bid": {
+      "post": {
+        "tags": [
+          "bid-controller"
+        ],
+        "operationId": "submitBid",
+        "parameters": [
+          {
+            "name": "X-Username",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BidRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BidResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin": {
+      "get": {
+        "tags": [
+          "admin-controller"
+        ],
+        "operationId": "getProduct_2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admin-controller"
+        ],
+        "operationId": "createProduct_1",
+        "parameters": [
+          {
+            "name": "X-Admin-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
                 }
               }
             }
@@ -92,37 +294,6 @@
         }
       }
     },
-    "/api/v1/products/{productId}": {
-      "get": {
-        "tags": [
-          "product-controller"
-        ],
-        "operationId": "findByProductId",
-        "parameters": [
-          {
-            "name": "productId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/products/get-all-products": {
       "get": {
         "tags": [
@@ -138,6 +309,159 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/ProductResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/categories": {
+      "get": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "getCategory",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/categories/get-all-categories": {
+      "get": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "getAllCategories",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bids": {
+      "get": {
+        "tags": [
+          "bid-controller"
+        ],
+        "operationId": "getProduct_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bids/get-bids-for-user": {
+      "get": {
+        "tags": [
+          "bid-controller"
+        ],
+        "operationId": "getBidsForUser",
+        "parameters": [
+          {
+            "name": "X-Username",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Bid"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bids/get-bids-for-product": {
+      "get": {
+        "tags": [
+          "bid-controller"
+        ],
+        "operationId": "getBidsForProduct",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Bid"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bids/get-all-bids": {
+      "get": {
+        "tags": [
+          "bid-controller"
+        ],
+        "operationId": "getAllProducts_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BidResponse"
                   }
                 }
               }
@@ -202,17 +526,16 @@
           "buyNowPrice": {
             "type": "number"
           },
-          "sellerId": {
-            "type": "integer",
-            "format": "int64"
+          "username": {
+            "type": "string"
           },
           "category": {
             "$ref": "#/components/schemas/Category"
           },
-          "availableForBuyNow": {
+          "sold": {
             "type": "boolean"
           },
-          "sold": {
+          "availableForBuyNow": {
             "type": "boolean"
           }
         }
@@ -225,13 +548,8 @@
         ],
         "type": "object",
         "properties": {
-          "productId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "sellerId": {
-            "type": "integer",
-            "format": "int64"
+          "username": {
+            "type": "string"
           },
           "productName": {
             "type": "string"
@@ -276,9 +594,8 @@
             "type": "integer",
             "format": "int64"
           },
-          "sellerId": {
-            "type": "integer",
-            "format": "int64"
+          "username": {
+            "type": "string"
           },
           "productName": {
             "type": "string"
@@ -320,6 +637,71 @@
           },
           "categoryDescription": {
             "type": "string"
+          }
+        }
+      },
+      "BidRequest": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          },
+          "bidAmount": {
+            "type": "number"
+          },
+          "bidTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "BidResponse": {
+        "type": "object",
+        "properties": {
+          "bidId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "productId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          },
+          "bidAmount": {
+            "type": "number"
+          },
+          "bidTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Bid": {
+        "type": "object",
+        "properties": {
+          "bidId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "productId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          },
+          "bidAmount": {
+            "type": "number"
+          },
+          "bidTime": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       }

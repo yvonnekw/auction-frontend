@@ -5,6 +5,79 @@ import {KeycloakService} from '../keycloak/keycloak.service';
 
 @Injectable()
 export class HttpTokenInterceptor implements HttpInterceptor {
+  constructor(private keycloakService: KeycloakService) {
+  }
+
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    // Skip intercepting specific URLs
+    if (request.url.includes('/api/v1/products/get-all-products')) {
+      return next.handle(request);
+    }
+    return from(this.keycloakService.getToken()).pipe(
+      switchMap(token =>
+        from(this.keycloakService.getToken()).pipe(
+          switchMap(username => {
+            const headers: { [key: string]: string } = {};
+
+            // Add Authorization header if token is present
+            if (token) {
+              headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            // Add X-Username header if username is present
+            if (username) {
+              headers['X-Username'] = username;
+            }
+
+            // Clone the request with additional headers
+            const authReq = request.clone({
+              setHeaders: headers,
+            });
+
+            return next.handle(authReq);
+          })
+        )
+      )
+    )
+  }
+}
+
+/*
+import {Injectable} from '@angular/core';
+import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {from, Observable, switchMap} from 'rxjs';
+import {KeycloakService} from '../keycloak/keycloak.service';
+@Injectable()
+export class HttpTokenInterceptor implements HttpInterceptor {
+  constructor(private keycloakService: KeycloakService) {}
+
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    if (request.url.includes('/api/v1/products/get-all-products')) {
+      return next.handle(request);
+    }
+
+    return from(this.keycloakService.getToken()).pipe(
+      switchMap(token => {
+        if (token) {
+          const authReq = request.clone({
+            setHeaders: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          return next.handle(authReq);
+        }
+        return next.handle(request);
+      })
+    );
+  }
+}
+
+
+
+ */
+/*
+@Injectable()
+export class HttpTokenInterceptor implements HttpInterceptor {
 
   constructor(private keycloakService: KeycloakService) {}
 
@@ -26,4 +99,8 @@ export class HttpTokenInterceptor implements HttpInterceptor {
       })
     );
   }
+
+
+
 }
+*/

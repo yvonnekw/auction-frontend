@@ -16,6 +16,6 @@ export interface ProductResponse {
   productName?: string;
   productSize?: string;
   quantity?: number;
-  sellerId?: number;
   startingPrice?: number;
+  username?: string;
 }

@@ -17,6 +17,8 @@ import { findAllOrders } from '../fn/order-controller/find-all-orders';
 import { FindAllOrders$Params } from '../fn/order-controller/find-all-orders';
 import { findByOrderId } from '../fn/order-controller/find-by-order-id';
 import { FindByOrderId$Params } from '../fn/order-controller/find-by-order-id';
+import { getPayment } from '../fn/order-controller/get-payment';
+import { GetPayment$Params } from '../fn/order-controller/get-payment';
 import { OrderResponse } from '../models/order-response';
 
 @Injectable({ providedIn: 'root' })
@@ -47,6 +49,31 @@ export class OrderControllerService extends BaseService {
   createOrder(params: CreateOrder$Params, context?: HttpContext): Observable<number> {
     return this.createOrder$Response(params, context).pipe(
       map((r: StrictHttpResponse<number>): number => r.body)
+    );
+  }
+
+  /** Path part for operation `getPayment()` */
+  static readonly GetPaymentPath = '/api/v1/orders';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getPayment()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getPayment$Response(params?: GetPayment$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+    return getPayment(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getPayment$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getPayment(params?: GetPayment$Params, context?: HttpContext): Observable<string> {
+    return this.getPayment$Response(params, context).pipe(
+      map((r: StrictHttpResponse<string>): string => r.body)
     );
   }
 

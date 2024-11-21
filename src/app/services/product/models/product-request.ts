@@ -11,10 +11,9 @@ export interface ProductRequest {
   description: string;
   isAvailableForBuyNow?: boolean;
   isSold?: boolean;
-  productId?: number;
   productName: string;
   productSize?: string;
   quantity?: number;
-  sellerId?: number;
   startingPrice?: number;
+  username?: string;
 }

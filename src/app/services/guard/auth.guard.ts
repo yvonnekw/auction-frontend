@@ -8,18 +8,18 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(): Promise<boolean> {
     try {
-      // Check if the user is authenticated using the Keycloak service
+
       const isAuthenticated = await this.keycloakService.isAuthenticated();
       if (isAuthenticated) {
-        return true; // User is authenticated
+        return true;
       } else {
-        // If not authenticated, redirect to the login page
+
         this.router.navigate(['/login']);
         return false;
       }
     } catch (error) {
       console.error('Error checking authentication status', error);
-      this.router.navigate(['/']); // Redirect to home in case of an error
+      this.router.navigate(['/home']);
       return false;
     }
   }

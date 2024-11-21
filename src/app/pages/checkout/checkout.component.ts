@@ -57,21 +57,71 @@ export class CheckoutComponent implements OnInit {
     }
   }
 */
+
+  /*
+  checkout(): void {
+    const username = this.keycloakService.getUsernameFromToken();
+    const cartItems = this.cartService.getCartItems();
+
+    if (!username || cartItems.length === 0) {
+      this.errorMessage = 'Cart is empty or user not authenticated';
+      return;
+    }
+
+    // Prepare order details
+    const orderRequest: CreateOrder$Params = {
+      'X-Username': username,
+      body: {
+        paymentMethod: 'CREDIT_CARD', // Or get this from the user input
+        products: cartItems.map(item => ({
+          productId: item.productId,
+          quantity: item.quantity
+        })),
+        reference: 'some-unique-reference',  // Generate or use a reference for the order
+        totalAmount: this.calculateTotal(cartItems)  // Calculate the total from the cart items
+      }
+    };
+
+    // Call the API to create the order
+    this.orderControllerService.createOrder(orderRequest).subscribe({
+      next: (orderId: number) => {
+        console.log('Order created successfully with ID:', orderId);
+        this.cartService.clearCart(); // Clear the cart after order creation
+        this.router.navigate(['/checkout']);  // Navigate to checkout page
+      },
+      error: (error) => {
+        console.error('Error creating order:', error);
+        this.errorMessage = 'Failed to complete the purchase. Please try again.';  // Set error message
+      }
+    });
+  }
+
+  private calculateTotal(cartItems: { productId: number; quantity: number }[]): number {
+    // Implement the total calculation based on the products in the cart
+    return cartItems.reduce((total, item) => total + (item.quantity * this.getProductPrice(item.productId)), 0);
+  }
+
+  private getProductPrice(productId: number): number {
+    // Fetch the product price based on the productId (this could be an API call)
+    return 100; // This is just a placeholder value
+  }
+
+/*
   onSubmit(): void {
     if (this.checkoutForm.valid) {
       const orderRequest: OrderRequest = {
-        orderId: undefined,
+       // orderId: undefined,
         reference: 'ORDER_' + Date.now(), // Generate a reference
         totalAmount: this.checkoutForm.value.totalAmount,
         paymentMethod: this.checkoutForm.value.paymentMethod,
-        userId: this.checkoutForm.value.userId,
+        //userId: this.checkoutForm.value.userId,
         products: this.checkoutForm.value.products.map((product: { productId: any; quantity: any; }) => ({
           productId: product?.productId,
           quantity: product.quantity
         })) as PurchaseRequest[]
       };
 
-      this.orderControllerService.createOrder({ body: orderRequest }).subscribe({
+      this.orderControllerService.createOrder({'X-Username':, body: orderRequest}).subscribe({
         next: (orderId: number) => {
           console.log('Order created successfully with ID:', orderId);
           // Navigate to a success page or the order details page
@@ -85,4 +135,7 @@ export class CheckoutComponent implements OnInit {
       console.log('Form is invalid');
     }
   }
+  */
+
+
 }

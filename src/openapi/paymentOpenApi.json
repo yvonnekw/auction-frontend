@@ -21,6 +21,40 @@
           "payment-controller"
         ],
         "operationId": "createPayment",
+        "parameters": [
+          {
+            "name": "X-Username",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-FirstName",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-LastName",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Email",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -32,8 +66,8 @@
           "required": true
         },
         "responses": {
-          "201": {
-            "description": "Created",
+          "200": {
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -145,10 +179,6 @@
       "PaymentRequest": {
         "type": "object",
         "properties": {
-          "paymentId": {
-            "type": "integer",
-            "format": "int64"
-          },
           "amount": {
             "type": "number"
           },
@@ -168,9 +198,6 @@
           "orderReference": {
             "type": "string"
           },
-          "User": {
-            "$ref": "#/components/schemas/User"
-          },
           "createdDate": {
             "type": "string",
             "format": "date-time"
@@ -181,29 +208,6 @@
           },
           "isSuccessful": {
             "type": "boolean"
-          }
-        }
-      },
-      "User": {
-        "required": [
-          "email",
-          "firstName",
-          "lastName"
-        ],
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
           }
         }
       },

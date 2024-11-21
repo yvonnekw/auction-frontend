@@ -5,4 +5,3 @@
 export { InvoiceRequest } from './models/invoice-request';
 export { InvoiceResponse } from './models/invoice-response';
 export { PaymentRequest } from './models/payment-request';
-export { User } from './models/user';

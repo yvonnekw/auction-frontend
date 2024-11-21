@@ -4,10 +4,8 @@
 
 import { PurchaseRequest } from '../models/purchase-request';
 export interface OrderRequest {
-  orderId?: number;
   paymentMethod: 'PAYPAL' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'BITCOIN';
   products: Array<PurchaseRequest>;
   reference?: string;
   totalAmount?: number;
-  userId?: number;
 }

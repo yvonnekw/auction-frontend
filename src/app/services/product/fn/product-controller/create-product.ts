@@ -9,14 +9,17 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 import { ProductRequest } from '../../models/product-request';
+import { ProductResponse } from '../../models/product-response';
 
 export interface CreateProduct$Params {
+  'X-Username': string;
       body: ProductRequest
 }
 
-export function createProduct(http: HttpClient, rootUrl: string, params: CreateProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+export function createProduct(http: HttpClient, rootUrl: string, params: CreateProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<ProductResponse>> {
   const rb = new RequestBuilder(rootUrl, createProduct.PATH, 'post');
   if (params) {
+    rb.header('X-Username', params['X-Username'], {});
     rb.body(params.body, 'application/json');
   }
 
@@ -25,7 +28,7 @@ export function createProduct(http: HttpClient, rootUrl: string, params: CreateP
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return (r as HttpResponse<any>).clone({ body: parseFloat(String((r as HttpResponse<any>).body)) }) as StrictHttpResponse<number>;
+      return r as StrictHttpResponse<ProductResponse>;
     })
   );
 }

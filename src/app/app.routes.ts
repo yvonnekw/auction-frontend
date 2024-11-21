@@ -7,8 +7,16 @@ import { SubmitBidComponent } from './pages/submit-bid/submit-bid.component';
 import { AuthGuard } from './services/guard/auth.guard';
 import {LoginComponent} from './pages/login/login.component';
 import {CheckoutComponent} from './pages/checkout/checkout.component';
+import {CreateProductComponent} from './pages/create-product/create-product.component';
+import {CartComponent} from './pages/cart/cart.component';
 
 export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'Home',
+    pathMatch: 'full'
+  },
+
   {
     path: '',
     component: HomeComponent
@@ -27,22 +35,30 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'cart',
+    component: CartComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'login',
     component: LoginComponent
   },
   {
-    path: 'submit-bid',
+    path: 'submit-bid/:productId',
     component: SubmitBidComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: '**',
-    redirectTo: '',
-  },
-
-  {
     path: 'checkout',
     component: CheckoutComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'create-product',
+    component: CreateProductComponent
+  },
+  {
+    path: '**',
+    component: HomeComponent
   },
 ];

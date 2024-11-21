@@ -2,16 +2,20 @@ import {Injectable} from '@angular/core';
 import Keycloak from 'keycloak-js';
 import {UserProfile} from './user-profile';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import {JwtHelperService} from '@auth0/angular-jwt';
 
 @Injectable({ providedIn: 'root' })
 export class KeycloakService {
   private keycloak: Keycloak;
+  private jwtHelper = new JwtHelperService();
 
   constructor() {
     this.keycloak = new Keycloak({
-      url: 'http://localhost:9098',  // Keycloak base URL
-      realm: 'auction-realm',   // Keycloak realm name
-      clientId: 'auction-client' // Keycloak client ID
+      url: 'http://localhost:9098',
+      realm: 'auction-realm',
+      clientId: 'auction-frontend',
+      //client_secret: 'password',
+
     });
   }
 
@@ -20,6 +24,7 @@ export class KeycloakService {
     return this.keycloak
       .init({
         onLoad: 'check-sso',
+        //onLoad: 'login-required',
         checkLoginIframe: false,
       })
       .then(authenticated => {
@@ -31,18 +36,32 @@ export class KeycloakService {
       });
   }
 
-
   async getToken(): Promise<string | undefined> {
     try {
-      await this.keycloak.updateToken(10)
-      ;
+      await this.keycloak.updateToken(10);
+      console.log('Retrieved Token:', this.keycloak.token);
       return this.keycloak.token;
-    } catch {
-      console.error('Failed to refresh token');
+    } catch (err) {
+      console.error('Failed to refresh token', err);
       return undefined;
     }
   }
 
+
+  /*
+    async getToken(): Promise<string | undefined> {
+      try {
+        await this.keycloak.updateToken(10)
+        ;
+        return this.keycloak.token;
+      } catch {
+        console.error('Failed to refresh token');
+        return undefined;
+      }
+    }
+
+
+   */
   async isAuthenticated(): Promise<boolean> {
     const token = await this.getToken();
     return !!token;
@@ -54,7 +73,10 @@ export class KeycloakService {
 
   async logout(): Promise<void> {
     //return await this.keycloak.logout({redirectUri: window.location.origin});
-    return this.keycloak.logout({ redirectUri: 'http://localhost:4200' });
+    await this.keycloak.logout({ redirectUri: 'http://localhost:4200' });
+    localStorage.clear();
+    location.reload();
+
   }
   async register(): Promise<void> {
     return await this.keycloak?.register();
@@ -73,6 +95,14 @@ export class KeycloakService {
     } catch {
       console.error('Failed to refresh token');
     }
+  }
+  getUsernameFromToken(): string | undefined {
+    const token = localStorage.getItem('access_token'); // Assuming the token is saved in localStorage
+    if (token) {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      return decodedToken.preferred_username; // 'preferred_username' is part of the decoded JWT payload
+    }
+    return undefined; // Return undefined if no token is found
   }
 }
 
