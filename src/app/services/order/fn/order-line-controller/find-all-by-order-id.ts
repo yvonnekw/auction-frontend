@@ -11,12 +11,14 @@ import { RequestBuilder } from '../../request-builder';
 import { OrderLineResponse } from '../../models/order-line-response';
 
 export interface FindAllByOrderId$Params {
+  Authorization: string;
   'order-id': number;
 }
 
 export function findAllByOrderId(http: HttpClient, rootUrl: string, params: FindAllByOrderId$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<OrderLineResponse>>> {
   const rb = new RequestBuilder(rootUrl, findAllByOrderId.PATH, 'get');
   if (params) {
+    rb.header('Authorization', params.Authorization, {});
     rb.path('order-id', params['order-id'], {});
   }
 

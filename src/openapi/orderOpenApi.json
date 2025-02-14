@@ -1,3 +1,4 @@
+
 {
   "openapi": "3.0.1",
   "info": {
@@ -19,7 +20,39 @@
         "operationId": "createOrder",
         "parameters": [
           {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "X-Username",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-FirstName",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-LastName",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Email",
             "in": "header",
             "required": true,
             "schema": {
@@ -31,7 +64,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/OrderRequest"
+                "$ref": "#/components/schemas/OrderPaymentRequest"
               }
             }
           },
@@ -174,6 +207,14 @@
         "operationId": "findAllByOrderId",
         "parameters": [
           {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "order-id",
             "in": "path",
             "required": true,
@@ -224,9 +265,19 @@
           }
         }
       },
+      "OrderPaymentRequest": {
+        "type": "object",
+        "properties": {
+          "paymentRequest": {
+            "$ref": "#/components/schemas/PaymentRequest"
+          },
+          "orderRequest": {
+            "$ref": "#/components/schemas/OrderRequest"
+          }
+        }
+      },
       "OrderRequest": {
         "required": [
-          "paymentMethod",
           "products"
         ],
         "type": "object",
@@ -237,20 +288,22 @@
           "totalAmount": {
             "type": "number"
           },
-          "paymentMethod": {
-            "type": "string",
-            "enum": [
-              "PAYPAL",
-              "CREDIT_CARD",
-              "DEBIT_CARD",
-              "BITCOIN"
-            ]
-          },
           "products": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PurchaseRequest"
             }
+          }
+        }
+      },
+      "PaymentRequest": {
+        "type": "object",
+        "properties": {
+          "paymentMethod": {
+            "type": "string"
+          },
+          "reference": {
+            "type": "string"
           }
         }
       },
@@ -265,8 +318,8 @@
             "format": "int64"
           },
           "quantity": {
-            "type": "number",
-            "format": "double"
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

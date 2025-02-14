@@ -11,10 +11,14 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { createPayment } from '../fn/payment-controller/create-payment';
-import { CreatePayment$Params } from '../fn/payment-controller/create-payment';
+import { getAllPayments } from '../fn/payment-controller/get-all-payments';
+import { GetAllPayments$Params } from '../fn/payment-controller/get-all-payments';
 import { getPayment } from '../fn/payment-controller/get-payment';
 import { GetPayment$Params } from '../fn/payment-controller/get-payment';
+import { Payment } from '../models/payment';
+import { PaymentResponse } from '../models/payment-response';
+import { processPayment } from '../fn/payment-controller/process-payment';
+import { ProcessPayment$Params } from '../fn/payment-controller/process-payment';
 
 @Injectable({ providedIn: 'root' })
 export class PaymentControllerService extends BaseService {
@@ -22,28 +26,28 @@ export class PaymentControllerService extends BaseService {
     super(config, http);
   }
 
-  /** Path part for operation `createPayment()` */
-  static readonly CreatePaymentPath = '/api/v1/payments/create-payment';
+  /** Path part for operation `processPayment()` */
+  static readonly ProcessPaymentPath = '/api/v1/payments/process-payment';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `createPayment()` instead.
+   * To access only the response body, use `processPayment()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createPayment$Response(params: CreatePayment$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
-    return createPayment(this.http, this.rootUrl, params, context);
+  processPayment$Response(params: ProcessPayment$Params, context?: HttpContext): Observable<StrictHttpResponse<PaymentResponse>> {
+    return processPayment(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `createPayment$Response()` instead.
+   * To access the full response (for headers, for example), `processPayment$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createPayment(params: CreatePayment$Params, context?: HttpContext): Observable<number> {
-    return this.createPayment$Response(params, context).pipe(
-      map((r: StrictHttpResponse<number>): number => r.body)
+  processPayment(params: ProcessPayment$Params, context?: HttpContext): Observable<PaymentResponse> {
+    return this.processPayment$Response(params, context).pipe(
+      map((r: StrictHttpResponse<PaymentResponse>): PaymentResponse => r.body)
     );
   }
 
@@ -69,6 +73,31 @@ export class PaymentControllerService extends BaseService {
   getPayment(params?: GetPayment$Params, context?: HttpContext): Observable<string> {
     return this.getPayment$Response(params, context).pipe(
       map((r: StrictHttpResponse<string>): string => r.body)
+    );
+  }
+
+  /** Path part for operation `getAllPayments()` */
+  static readonly GetAllPaymentsPath = '/api/v1/payments/get-all-payments';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllPayments()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllPayments$Response(params?: GetAllPayments$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Payment>>> {
+    return getAllPayments(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllPayments$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllPayments(params?: GetAllPayments$Params, context?: HttpContext): Observable<Array<Payment>> {
+    return this.getAllPayments$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<Payment>>): Array<Payment> => r.body)
     );
   }
 

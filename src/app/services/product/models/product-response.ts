@@ -5,9 +5,7 @@
 export interface ProductResponse {
   brandName?: string;
   buyNowPrice?: number;
-  categoryDescription?: string;
   categoryId?: number;
-  categoryName?: string;
   colour?: string;
   description?: string;
   isAvailableForBuyNow?: boolean;

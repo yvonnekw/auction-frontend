@@ -1,3 +1,109 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Product } from '../../services/product/models/product';
+import { KeycloakService } from '../../services/keycloak/keycloak.service';
+import { BidRequest } from '../../services/product/models/bid-request'; // Import BidRequest
+import { ApiConfiguration } from '../../services/order/api-configuration'; // Import ApiConfiguration
+import { CommonModule, CurrencyPipe, NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import {BidControllerService} from '../../services/product/services/bid-controller.service';
+import {SubmitBid$Params} from '../../services/product/fn/bid-controller/submit-bid';
+import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
+
+@Component({
+  selector: 'app-submit-bid',
+  standalone: true,
+  imports: [CommonModule, NgIf, NgFor, FormsModule, CurrencyPipe],
+  templateUrl: './submit-bid.component.html',
+  styleUrls: ['./submit-bid.component.css']
+})
+export class SubmitBidComponent implements OnInit {
+
+  productId!: number;
+  product!: Product;
+  bidAmount!: number;
+  errorMessage: string = '';
+  successMessage: string = '';
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private keycloakService: KeycloakService,
+    private http: HttpClient,
+    private bidControllerService: BidControllerService,
+    private apiConfig: ApiConfiguration
+  ) {}
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('productId');
+      if (id) {
+        this.productId = +id;
+        this.fetchProductDetails(this.productId);
+      } else {
+        this.errorMessage = 'Invalid product ID.';
+      }
+    });
+  }
+
+  fetchProductDetails(productId: number): void {
+    this.http.get<Product>(`${this.apiConfig.rootUrl}/api/v1/products/${productId}`).subscribe({
+      next: (product: Product) => {
+        this.product = product;
+      },
+      error: (error) => {
+        console.error('Error fetching product details:', error);
+        this.errorMessage = 'Failed to load product details.';
+      },
+    });
+  }
+
+  async onSubmit(): Promise<void> {
+    if (this.bidAmount < this.product.buyNowPrice!) {
+      this.errorMessage = `Your bid must be at least ${this.product.buyNowPrice!}.`;
+      return;
+    }
+
+    const token = await this.keycloakService.getToken();
+    const username = await this.keycloakService.getUsernameFromToken();
+    console.log(token)
+
+    if (!username) {
+      this.errorMessage = 'User is not authenticated';
+      return;
+    }
+
+    const bidRequest: BidRequest = {
+      productId: this.productId,
+      bidAmount: this.bidAmount,
+    };
+
+    // Use the SubmitBid$Params interface
+    const submitBidParams: SubmitBid$Params = {
+      'Authorization': `Bearer ${token}`,
+      'X-Username': username,
+      body: bidRequest
+    };
+
+    this.bidControllerService.submitBid(submitBidParams).subscribe({
+      next: (response) => { // Handle the response
+        console.log('Bid submitted body:', submitBidParams);
+        console.log('Bid submitted successfully:', response);
+        this.successMessage = `Your bid of ${response.bidAmount} has been submitted successfully!`;
+        this.router.navigate(['/bids']);
+      },
+      error: (error) => {
+        console.error('Error submitting bid:', error);
+        this.errorMessage = 'Failed to submit your bid. Please try again.';
+      },
+    });
+  }
+}
+
+
+
+/*
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Product} from '../../services/product/models/product';
@@ -24,6 +130,7 @@ import {FormsModule} from '@angular/forms';
   bidAmount!: number;
   errorMessage: string = '';
   successMessage: string = '';
+
 
   constructor(
     private route: ActivatedRoute,
@@ -58,14 +165,15 @@ import {FormsModule} from '@angular/forms';
     });
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
 
     if (this.bidAmount < this.product.buyNowPrice!) {
-      this.errorMessage = `Your bid must be at least ${this.product.buyNowPrice! }.`;
+      this.errorMessage = `Your bid must be at least ${this.product.buyNowPrice!}.`;
       return;
     }
 
-    const username = this.keycloakService.getUsernameFromToken();
+    //const username = this.keycloakService.getUsernameFromToken();
+    const username = await this.keycloakService.getUsernameFromToken();
 
     if (!username) {
       this.errorMessage = 'User is not authenticated';
@@ -75,7 +183,7 @@ import {FormsModule} from '@angular/forms';
     const bidRequest: BidRequest = {
       productId: this.productId,
       bidAmount: this.bidAmount,
-      username: username,
+    //  username: username
     };
 
     this.http
@@ -99,6 +207,7 @@ import {FormsModule} from '@angular/forms';
   }
   }
 
+ */
  /*
   productId!: number;
   productName!: string;
@@ -130,3 +239,4 @@ import {FormsModule} from '@angular/forms';
   }
 
 }*/
+

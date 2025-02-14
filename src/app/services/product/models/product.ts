@@ -5,6 +5,8 @@
 import { Category } from '../models/category';
 export interface Product {
   availableForBuyNow?: boolean;
+  bidStartTime?: string;
+  boughtOnBuyNow?: boolean;
   brandName?: string;
   buyNowPrice?: number;
   category?: Category;

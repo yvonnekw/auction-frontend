@@ -8,6 +8,7 @@ import {AuctionPageComponent} from './pages/auction-page/auction-page.component'
 import {BuyNowComponent} from './pages/buy-now/buy-now.component';
 import {SubmitBidComponent} from './pages/submit-bid/submit-bid.component';
 import {CreateProductComponent} from './pages/create-product/create-product.component';
+import {NavbarComponent} from './pages/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ import {CreateProductComponent} from './pages/create-product/create-product.comp
   imports: [RouterOutlet, HomeComponent,
     ProductDetailComponent, ProductListComponent,
     AuctionPageComponent, RouterOutlet,
-  BuyNowComponent, SubmitBidComponent, RouterLink,RouterLinkActive, CreateProductComponent],
+  BuyNowComponent, SubmitBidComponent, RouterLink,RouterLinkActive, CreateProductComponent, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

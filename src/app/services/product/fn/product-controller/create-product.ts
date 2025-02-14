@@ -12,6 +12,7 @@ import { ProductRequest } from '../../models/product-request';
 import { ProductResponse } from '../../models/product-response';
 
 export interface CreateProduct$Params {
+  Authorization: string;
   'X-Username': string;
       body: ProductRequest
 }
@@ -19,6 +20,7 @@ export interface CreateProduct$Params {
 export function createProduct(http: HttpClient, rootUrl: string, params: CreateProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<ProductResponse>> {
   const rb = new RequestBuilder(rootUrl, createProduct.PATH, 'post');
   if (params) {
+    rb.header('Authorization', params.Authorization, {});
     rb.header('X-Username', params['X-Username'], {});
     rb.body(params.body, 'application/json');
   }

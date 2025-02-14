@@ -12,12 +12,14 @@ import { InvoiceRequest } from '../../models/invoice-request';
 import { InvoiceResponse } from '../../models/invoice-response';
 
 export interface CreateInvoice$Params {
+  Authorization: string;
       body: InvoiceRequest
 }
 
 export function createInvoice(http: HttpClient, rootUrl: string, params: CreateInvoice$Params, context?: HttpContext): Observable<StrictHttpResponse<InvoiceResponse>> {
   const rb = new RequestBuilder(rootUrl, createInvoice.PATH, 'post');
   if (params) {
+    rb.header('Authorization', params.Authorization, {});
     rb.body(params.body, 'application/json');
   }
 

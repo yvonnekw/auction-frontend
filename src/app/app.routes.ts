@@ -9,11 +9,13 @@ import {LoginComponent} from './pages/login/login.component';
 import {CheckoutComponent} from './pages/checkout/checkout.component';
 import {CreateProductComponent} from './pages/create-product/create-product.component';
 import {CartComponent} from './pages/cart/cart.component';
+import {NavbarComponent} from './pages/navbar/navbar.component';
+import {PaymentComponent} from './pages/payment/payment.component';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'Home',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
 
@@ -61,4 +63,10 @@ export const routes: Routes = [
     path: '**',
     component: HomeComponent
   },
+
+  { path: 'payment',
+    component: PaymentComponent,
+    canActivate: [AuthGuard]
+  },
+
 ];

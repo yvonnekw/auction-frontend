@@ -17,12 +17,127 @@ import { getAllProducts } from '../fn/product-controller/get-all-products';
 import { GetAllProducts$Params } from '../fn/product-controller/get-all-products';
 import { getProduct } from '../fn/product-controller/get-product';
 import { GetProduct$Params } from '../fn/product-controller/get-product';
+import { getProductById } from '../fn/product-controller/get-product-by-id';
+import { GetProductById$Params } from '../fn/product-controller/get-product-by-id';
+import { markProductAsBought } from '../fn/product-controller/mark-product-as-bought';
+import { MarkProductAsBought$Params } from '../fn/product-controller/mark-product-as-bought';
+import { ProductCartResponse } from '../models/product-cart-response';
 import { ProductResponse } from '../models/product-response';
+import { purchaseProducts } from '../fn/product-controller/purchase-products';
+import { PurchaseProducts$Params } from '../fn/product-controller/purchase-products';
+import { searchProducts } from '../fn/product-controller/search-products';
+import { SearchProducts$Params } from '../fn/product-controller/search-products';
+import { updateProduct } from '../fn/product-controller/update-product';
+import { UpdateProduct$Params } from '../fn/product-controller/update-product';
 
 @Injectable({ providedIn: 'root' })
 export class ProductControllerService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `getProductById()` */
+  static readonly GetProductByIdPath = '/api/v1/products/{productId}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getProductById()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getProductById$Response(params: GetProductById$Params, context?: HttpContext): Observable<StrictHttpResponse<ProductCartResponse>> {
+    return getProductById(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getProductById$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getProductById(params: GetProductById$Params, context?: HttpContext): Observable<ProductCartResponse> {
+    return this.getProductById$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ProductCartResponse>): ProductCartResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `updateProduct()` */
+  static readonly UpdateProductPath = '/api/v1/products/{productId}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `updateProduct()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  updateProduct$Response(params: UpdateProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return updateProduct(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `updateProduct$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  updateProduct(params: UpdateProduct$Params, context?: HttpContext): Observable<void> {
+    return this.updateProduct$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `markProductAsBought()` */
+  static readonly MarkProductAsBoughtPath = '/api/v1/products/{productId}/mark-as-bought';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `markProductAsBought()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  markProductAsBought$Response(params: MarkProductAsBought$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return markProductAsBought(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `markProductAsBought$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  markProductAsBought(params: MarkProductAsBought$Params, context?: HttpContext): Observable<void> {
+    return this.markProductAsBought$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `purchaseProducts()` */
+  static readonly PurchaseProductsPath = '/api/v1/products/purchase';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `purchaseProducts()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  purchaseProducts$Response(params: PurchaseProducts$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+}>> {
+    return purchaseProducts(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `purchaseProducts$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  purchaseProducts(params: PurchaseProducts$Params, context?: HttpContext): Observable<{
+}> {
+    return this.purchaseProducts$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+}>): {
+} => r.body)
+    );
   }
 
   /** Path part for operation `createProduct()` */
@@ -75,6 +190,31 @@ export class ProductControllerService extends BaseService {
     );
   }
 
+  /** Path part for operation `searchProducts()` */
+  static readonly SearchProductsPath = '/api/v1/products/search';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `searchProducts()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  searchProducts$Response(params: SearchProducts$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ProductResponse>>> {
+    return searchProducts(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `searchProducts$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  searchProducts(params: SearchProducts$Params, context?: HttpContext): Observable<Array<ProductResponse>> {
+    return this.searchProducts$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<ProductResponse>>): Array<ProductResponse> => r.body)
+    );
+  }
+
   /** Path part for operation `getAllProducts()` */
   static readonly GetAllProductsPath = '/api/v1/products/get-all-products';
 
@@ -84,16 +224,22 @@ export class ProductControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
+
+  getAllProducts$Response(params?: GetAllProducts$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ProductResponse>>> {
+    return getAllProducts(this.http, this.rootUrl, params, context);
+  }
+
+/*
   getAllProducts$Response(params?: GetAllProducts$Params, context?: HttpContext): Observable<StrictHttpResponse<ProductResponse[]>> {
     return this.http.get<ProductResponse[]>(this.config.rootUrl + ProductControllerService.GetAllProductsPath, {
-      observe: 'response',
-      responseType: 'json',
+      observe: 'response', // This allows you to get the full HTTP response
+      responseType: 'json', // Assuming the API responds with JSON
       context: context
     }).pipe(
       map((response: HttpResponse<ProductResponse[]>) => {
-
+        // Create a StrictHttpResponse from the HttpResponse
         return {
-          body: response.body || [],
+          body: response.body || [], // Default to an empty array if body is null
           headers: response.headers,
           status: response.status,
           statusText: response.statusText,
@@ -101,15 +247,10 @@ export class ProductControllerService extends BaseService {
           type: response.type,
           ok: response.ok,
           clone: () => response.clone(),
-        } as StrictHttpResponse<ProductResponse[]>;
+        } as StrictHttpResponse<ProductResponse[]>; // Type assertion
       })
     );
-  }
-  /*
-  getAllProducts$Response(params?: GetAllProducts$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ProductResponse>>> {
-    return getAllProducts(this.http, this.rootUrl, params, context);
-  }
-*/
+  }*/
   /**
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `getAllProducts$Response()` instead.
@@ -117,6 +258,13 @@ export class ProductControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
 
+  getAllProducts(params?: GetAllProducts$Params, context?: HttpContext): Observable<Array<ProductResponse>> {
+    return this.getAllProducts$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<ProductResponse>>): Array<ProductResponse> => r.body)
+    );
+  }
+
+/*
   getAllProducts(params?: GetAllProducts$Params, context?: HttpContext): Observable<ProductResponse[]> {
     return this.getAllProducts$Response(params, context).pipe(
       tap((response: StrictHttpResponse<ProductResponse[]>) => {
@@ -130,14 +278,5 @@ export class ProductControllerService extends BaseService {
         return of([]); // Return an empty array on error
       })
     );
-  }
-
-
-  /*
-  getAllProducts(params?: GetAllProducts$Params, context?: HttpContext): Observable<Array<ProductResponse>> {
-    return this.getAllProducts$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Array<ProductResponse>>): Array<ProductResponse> => r.body)
-    );
-  }
-*/
+  }*/
 }

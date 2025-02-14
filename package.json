@@ -8,10 +8,10 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "api-gen-ord": "ng-openapi-gen --input src/openapi/orderOpenApi.json --output ./src/app/services/order",
-    "api-gen-add": "ng-openapi-gen --input src/openapi/addressOpenApi.json --output ./src/app/services/address",
+    "api-gen-car": "ng-openapi-gen --input src/openapi/cartOpenApi.json --output ./src/app/services/cart",
     "api-gen-pro": "ng-openapi-gen --input src/openapi/productOpenApi.json --output ./src/app/services/product",
     "api-gen-pay": "ng-openapi-gen --input src/openapi/paymentOpenApi.json --output ./src/app/services/payment",
-    "api-gen-use": "ng-openapi-gen --input src/openapi/userOpenApi.json --output ./src/app/services/user"
+    "api-gen-che": "ng-openapi-gen --input src/openapi/checkoutOpenApi.json --output ./src/app/services/checkout"
   },
   "private": true,
   "dependencies": {

@@ -8,17 +8,25 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { OrderRequest } from '../../models/order-request';
+import { OrderPaymentRequest } from '../../models/order-payment-request';
 
 export interface CreateOrder$Params {
+  Authorization: string;
   'X-Username': string;
-      body: OrderRequest
+  'X-FirstName': string;
+  'X-LastName': string;
+  'X-Email': string;
+      body: OrderPaymentRequest
 }
 
 export function createOrder(http: HttpClient, rootUrl: string, params: CreateOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
   const rb = new RequestBuilder(rootUrl, createOrder.PATH, 'post');
   if (params) {
+    rb.header('Authorization', params.Authorization, {});
     rb.header('X-Username', params['X-Username'], {});
+    rb.header('X-FirstName', params['X-FirstName'], {});
+    rb.header('X-LastName', params['X-LastName'], {});
+    rb.header('X-Email', params['X-Email'], {});
     rb.body(params.body, 'application/json');
   }
 

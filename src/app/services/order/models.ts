@@ -4,6 +4,8 @@
 
 export { ErrorResponse } from './models/error-response';
 export { OrderLineResponse } from './models/order-line-response';
+export { OrderPaymentRequest } from './models/order-payment-request';
 export { OrderRequest } from './models/order-request';
 export { OrderResponse } from './models/order-response';
+export { PaymentRequest } from './models/payment-request';
 export { PurchaseRequest } from './models/purchase-request';
