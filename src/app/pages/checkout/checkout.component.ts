@@ -1,3 +1,136 @@
+import {Component, inject, OnInit} from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { OrderControllerService } from '../../services/order/services';
+import { OrderRequest } from '../../services/order/models/order-request';
+import { PurchaseRequest } from '../../services/order/models/purchase-request';
+
+import { NgFor, NgIf } from '@angular/common';
+import {CartControllerService} from '../../services/cart/services/cart-controller.service';
+import {KeycloakService} from '../../services/keycloak/keycloak.service';
+import {GetCartItems$Params} from '../../services/cart/fn/cart-controller/get-cart-items'; // Adjust the path as needed
+
+@Component({
+  selector: 'app-checkout',
+  standalone: true,
+  imports: [ReactiveFormsModule, NgFor, NgIf],
+  templateUrl: './checkout.component.html',
+  styleUrls: ['./checkout.component.scss']
+})
+export class CheckoutComponent implements OnInit {
+  checkoutForm: FormGroup;
+  cartItems: any[] = [];  // Assuming cart items are fetched from the service
+  isLoading = true; // Flag to show loading spinner
+  errorMessage: string | null = null;
+
+  private cartControllerService = inject(CartControllerService)
+  username?: string
+  keycloakService = inject(KeycloakService)
+
+  constructor(
+    private fb: FormBuilder,
+    private orderControllerService: OrderControllerService,
+    private router: Router,
+   // Assuming you have this service to fetch cart items
+  ) {
+    // Initialize the form
+    this.checkoutForm = this.fb.group({
+      userId: ['', [Validators.required]],
+      totalAmount: [{ value: 0, disabled: true }], // Assuming total amount is calculated on the front-end
+      paymentMethod: ['', [Validators.required]],
+      products: this.fb.array([]) // Initialize as FormArray
+    });
+  }
+
+  async ngOnInit(): Promise<void> {
+    try {
+      const token = await this.keycloakService.getToken();
+      const username = await this.keycloakService.getUsernameFromToken();
+
+      if (!token || !username) {
+        console.error('Missing token or username');
+        return;
+      }
+
+      const params: GetCartItems$Params = {
+        'Authorization': `Bearer ${token}`,
+        'X-Username': username,
+      }
+
+      this.username = await this.keycloakService.getUsernameFromToken();
+      this.cartControllerService.getCartItems(params).subscribe({
+        next: (cart) => {
+          this.cartItems = cart.items || [];
+          this.initializeProducts();
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Error fetching cart items:', err);
+          this.isLoading = false;
+          this.errorMessage = 'Error fetching cart items.';
+        }
+      })
+    }
+    catch (error) {
+        console.error('Error fetching token or username:', error);
+      }
+  }
+
+  // Initialize the FormArray with cart items
+  initializeProducts(): void {
+    const productsFormArray = this.checkoutForm.get('products') as FormArray;
+
+    // For each cart item, create a form group and add it to the products array
+    this.cartItems.forEach(item => {
+      productsFormArray.push(this.fb.group({
+        productId: [item.productId, [Validators.required]],
+        quantity: [item.quantity, [Validators.required, Validators.min(1)]]
+      }));
+    });
+
+    // Calculate the total amount
+    const totalAmount = this.cartItems.reduce((total, item) => total + (item.quantity * item.price), 0);
+    this.checkoutForm.patchValue({ totalAmount });
+  }
+/*
+  // Handle the checkout process
+  checkout(): void {
+    if (this.checkoutForm.valid) {
+      const orderRequest: OrderRequest = {
+        reference: 'ORDER_' + Date.now(), // Generate a reference
+        totalAmount: this.checkoutForm.value.totalAmount,
+        paymentMethod: this.checkoutForm.value.paymentMethod,
+        products: this.checkoutForm.value.products.map((product: { productId: any; quantity: any; }) => ({
+          productId: product?.productId,
+          quantity: product.quantity
+        })) as PurchaseRequest[]
+      };
+
+      this.orderControllerService.createOrder({ 'X-Username': 'testuser', body: orderRequest }).subscribe({
+        next: (orderId: number) => {
+          console.log('Order created successfully with ID:', orderId);
+          //this.cartControllerService.clearCart(); // Clear the cart after order creation
+          this.router.navigate(['/order-success', orderId]);  // Navigate to order success page
+        },
+        error: (error) => {
+          console.error('Error creating order:', error);
+          this.errorMessage = 'Failed to complete the purchase. Please try again.';  // Set error message
+        }
+      });
+    } else {
+      console.log('Form is invalid');
+    }
+  }*/
+
+  // Handle payment
+  makePayment(): void {
+    console.log('Processing payment...');
+    // Call your payment processing method here (e.g., integration with a payment gateway)
+  }
+
+
+/*
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';

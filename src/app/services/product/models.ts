@@ -7,5 +7,6 @@ export { BidRequest } from './models/bid-request';
 export { BidResponse } from './models/bid-response';
 export { Category } from './models/category';
 export { Product } from './models/product';
+export { ProductCartResponse } from './models/product-cart-response';
 export { ProductRequest } from './models/product-request';
 export { ProductResponse } from './models/product-response';

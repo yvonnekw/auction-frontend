@@ -11,6 +11,77 @@
     }
   ],
   "paths": {
+    "/api/v1/products/{productId}": {
+      "get": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "getProductById",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductCartResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductResponse"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/categories/{id}": {
       "get": {
         "tags": [
@@ -103,6 +174,78 @@
         }
       }
     },
+    "/api/v1/products/{productId}/mark-as-bought": {
+      "post": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "markProductAsBought",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/products/purchase": {
+      "post": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "purchaseProducts",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/products/create-product": {
       "post": {
         "tags": [
@@ -110,6 +253,14 @@
         ],
         "operationId": "createProduct",
         "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "X-Username",
             "in": "header",
@@ -181,6 +332,14 @@
         "operationId": "submitBid",
         "parameters": [
           {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "X-Username",
             "in": "header",
             "required": true,
@@ -213,67 +372,6 @@
         }
       }
     },
-    "/api/v1/admin": {
-      "get": {
-        "tags": [
-          "admin-controller"
-        ],
-        "operationId": "getProduct_2",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "admin-controller"
-        ],
-        "operationId": "createProduct_1",
-        "parameters": [
-          {
-            "name": "X-Admin-Token",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Product"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/products": {
       "get": {
         "tags": [
@@ -287,6 +385,39 @@
               "*/*": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/search": {
+      "get": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "searchProducts",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  }
                 }
               }
             }
@@ -365,7 +496,7 @@
         "tags": [
           "bid-controller"
         ],
-        "operationId": "getProduct_1",
+        "operationId": "getBids",
         "responses": {
           "200": {
             "description": "OK",
@@ -387,6 +518,14 @@
         ],
         "operationId": "getBidsForUser",
         "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "X-Username",
             "in": "header",
@@ -421,6 +560,14 @@
         "operationId": "getBidsForProduct",
         "parameters": [
           {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "productId",
             "in": "query",
             "required": true,
@@ -453,6 +600,16 @@
           "bid-controller"
         ],
         "operationId": "getAllProducts_1",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -473,6 +630,53 @@
   },
   "components": {
     "schemas": {
+      "ProductResponse": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "brandName": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "startingPrice": {
+            "type": "number"
+          },
+          "buyNowPrice": {
+            "type": "number"
+          },
+          "colour": {
+            "type": "string"
+          },
+          "productSize": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isAvailableForBuyNow": {
+            "type": "boolean"
+          },
+          "isSold": {
+            "type": "boolean"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "Category": {
         "type": "object",
         "properties": {
@@ -517,8 +721,8 @@
             "type": "string"
           },
           "quantity": {
-            "type": "number",
-            "format": "double"
+            "type": "integer",
+            "format": "int32"
           },
           "startingPrice": {
             "type": "number"
@@ -526,23 +730,30 @@
           "buyNowPrice": {
             "type": "number"
           },
+          "boughtOnBuyNow": {
+            "type": "boolean"
+          },
+          "bidStartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
           "username": {
             "type": "string"
           },
           "category": {
             "$ref": "#/components/schemas/Category"
           },
-          "sold": {
+          "availableForBuyNow": {
             "type": "boolean"
           },
-          "availableForBuyNow": {
+          "sold": {
             "type": "boolean"
           }
         }
       },
       "ProductRequest": {
         "required": [
-          "category",
+          "categoryId",
           "description",
           "productName"
         ],
@@ -579,64 +790,12 @@
             "type": "boolean"
           },
           "quantity": {
-            "type": "number",
-            "format": "double"
-          },
-          "category": {
-            "$ref": "#/components/schemas/Category"
-          }
-        }
-      },
-      "ProductResponse": {
-        "type": "object",
-        "properties": {
-          "productId": {
             "type": "integer",
-            "format": "int64"
-          },
-          "username": {
-            "type": "string"
-          },
-          "productName": {
-            "type": "string"
-          },
-          "brandName": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "startingPrice": {
-            "type": "number"
-          },
-          "buyNowPrice": {
-            "type": "number"
-          },
-          "colour": {
-            "type": "string"
-          },
-          "productSize": {
-            "type": "string"
-          },
-          "quantity": {
-            "type": "number",
-            "format": "double"
-          },
-          "isAvailableForBuyNow": {
-            "type": "boolean"
-          },
-          "isSold": {
-            "type": "boolean"
+            "format": "int32"
           },
           "categoryId": {
             "type": "integer",
             "format": "int64"
-          },
-          "categoryName": {
-            "type": "string"
-          },
-          "categoryDescription": {
-            "type": "string"
           }
         }
       },
@@ -647,15 +806,8 @@
             "type": "integer",
             "format": "int64"
           },
-          "username": {
-            "type": "string"
-          },
           "bidAmount": {
             "type": "number"
-          },
-          "bidTime": {
-            "type": "string",
-            "format": "date-time"
           }
         }
       },
@@ -679,6 +831,26 @@
           "bidTime": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "ProductCartResponse": {
+        "required": [
+          "productId",
+          "quantity"
+        ],
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "number"
           }
         }
       },

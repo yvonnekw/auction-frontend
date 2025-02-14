@@ -1,3 +1,4 @@
+
 {
   "openapi": "3.0.1",
   "info": {
@@ -15,13 +16,21 @@
     }
   ],
   "paths": {
-    "/api/v1/payments/create-payment": {
+    "/api/v1/payments/process-payment": {
       "post": {
         "tags": [
           "payment-controller"
         ],
-        "operationId": "createPayment",
+        "operationId": "processPayment",
         "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "X-Username",
             "in": "header",
@@ -71,8 +80,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/PaymentResponse"
                 }
               }
             }
@@ -86,6 +94,16 @@
           "invoice-controller"
         ],
         "operationId": "createInvoice",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -123,6 +141,29 @@
               "*/*": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payments/get-all-payments": {
+      "get": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "getAllPayments",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Payment"
+                  }
                 }
               }
             }
@@ -211,6 +252,21 @@
           }
         }
       },
+      "PaymentResponse": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "isSuccessful": {
+            "type": "boolean"
+          }
+        }
+      },
       "InvoiceRequest": {
         "type": "object",
         "properties": {
@@ -246,6 +302,42 @@
             "type": "string"
           },
           "invoiceDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Payment": {
+        "type": "object",
+        "properties": {
+          "paymentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "PAYPAL",
+              "CREDIT_CARD",
+              "DEBIT_CARD",
+              "BITCOIN"
+            ]
+          },
+          "orderId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastModifiedDate": {
             "type": "string",
             "format": "date-time"
           }

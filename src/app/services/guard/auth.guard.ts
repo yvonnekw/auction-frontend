@@ -14,12 +14,12 @@ export class AuthGuard implements CanActivate {
         return true;
       } else {
 
-        this.router.navigate(['/login']);
+        await this.router.navigate(['/login']);
         return false;
       }
     } catch (error) {
       console.error('Error checking authentication status', error);
-      this.router.navigate(['/home']);
+      await this.router.navigate(['/home']);
       return false;
     }
   }

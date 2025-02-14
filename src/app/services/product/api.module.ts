@@ -6,10 +6,9 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
-import { CategoryControllerService } from './services/category-controller.service';
 import { ProductControllerService } from './services/product-controller.service';
+import { CategoryControllerService } from './services/category-controller.service';
 import { BidControllerService } from './services/bid-controller.service';
-import { AdminControllerService } from './services/admin-controller.service';
 
 /**
  * Module that provides all services and configuration.
@@ -19,10 +18,9 @@ import { AdminControllerService } from './services/admin-controller.service';
   exports: [],
   declarations: [],
   providers: [
-    CategoryControllerService,
     ProductControllerService,
+    CategoryControllerService,
     BidControllerService,
-    AdminControllerService,
     ApiConfiguration
   ],
 })
