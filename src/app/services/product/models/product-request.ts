@@ -10,6 +10,7 @@ export interface ProductRequest {
   description: string;
   isAvailableForBuyNow?: boolean;
   isSold?: boolean;
+  productImageUrl?: string;
   productName: string;
   productSize?: string;
   quantity?: number;

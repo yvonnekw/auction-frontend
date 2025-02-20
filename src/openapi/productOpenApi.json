@@ -649,6 +649,9 @@
           "description": {
             "type": "string"
           },
+          "productImageUrl": {
+            "type": "string"
+          },
           "startingPrice": {
             "type": "number"
           },
@@ -714,6 +717,9 @@
           "description": {
             "type": "string"
           },
+          "productImageUrl": {
+            "type": "string"
+          },
           "colour": {
             "type": "string"
           },
@@ -769,6 +775,9 @@
             "type": "string"
           },
           "description": {
+            "type": "string"
+          },
+          "productImageUrl": {
             "type": "string"
           },
           "startingPrice": {
