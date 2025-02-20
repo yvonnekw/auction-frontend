@@ -1,139 +1,16 @@
-<!--
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom border-top">
-  <div class="container">
-    <a class="navbar-brand fs-2 fw-bold" href="#">
-      <i class="fa fa-cart-shopping fs-2" style="color: #f54242;"></i>
-      <span class="textBlur">auction</span>
-    </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse justify-content-between" id="navbarColNav">
-
-      <form class="d-flex mx-auto w-50" (ngSubmit)="onSearch()">
-        <input class="form-control me-2" type="search" placeholder="Search products" aria-label="Search"
-               [(ngModel)]="searchQuery" name="searchQuery" data-cy="search-input" />
-        <button class="btn btn-outline-success" type="submit" data-cy="search-button">Search</button>
-      </form>
-
-
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-center">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle fw-semibold text-uppercase me-1 text-danger" href="#" id="homeDropdown"
-             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Home
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link fw-semibold text-uppercase text-black me-1" href="#">Contact Us</a>
-        </li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle fw-semibold text-uppercase text-black me-1" href="#" id="accountDropdown"
-             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Account
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-            <li><a class="dropdown-item" href="#">Your auctions</a></li>
-            <li><a class="dropdown-item" href="#">Orders</a></li>
-          </ul>
-        </li>
-
-        <div class="d-flex align-items-center">
-          <a *ngIf="!isLoggedIn" (click)="login()" class="nav-link">Login</a>
-          <a *ngIf="!isLoggedIn" (click)="register()" class="nav-link"> / Register</a>
-          <a *ngIf="isLoggedIn" (click)="logout()" class="nav-link">Logout</a>
-
-          <div *ngIf="isLoggedIn" class="nav-item dropdown">
-            <span class="nav-link dropdown-toggle" id="userProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Welcome, {{ userProfile?.firstName }}!
-            </span>
-            <ul class="dropdown-menu" aria-labelledby="userProfileDropdown">
-              <li><a class="dropdown-item" [routerLink]="'/profile'" routerLinkActive="active">Manage Profile</a></li>
-            </ul>
-          </div>
-        </div>
-
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle cart fw-semibold text-uppercase text-black me-1" href="#"
-             id="cartDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa fa-cart-shopping fs-5" style="color: #202122;"></i>
-            <span class="position-absolute translate-middle badge rounded-pill bg-danger">
-              {{ cartItems.length || 0 }}
-              <span class="visually-hidden">unread messages</span>
-            </span>
-          </a>
-
-          <div class="dropdown-menu">
-            <div class="CartContainer">
-              <div class="row">
-                <div class="col-6">Your Cart</div>
-                <div class="col-6 text-end text-danger">Remove All</div>
-              </div>
-
-              <div class="row pt-1" *ngFor="let cart of cartItems">
-                <div class="col-4">
-                  <img class="img-fluid" style="height: 30px; border-radius: 50%;" [src]="cart.productImageUrl">
-                </div>
-                <div class="col-3">{{ cart.productName }}</div>
-                <div class="col-2">{{ cart.quantity }}</div>
-                <div class="col-2 text-end">{{ cart.price }}</div>
-              </div>
-
-              <div class="row">
-                <div class="col-3"></div>
-                <div class="col-9"><hr></div>
-              </div>
-
-              <div class="row">
-                <div class="col-4">
-                  <div class="Subtotal">Sub-Total</div>
-                  <div><small>{{ cartItems.length || 0 }} items</small></div>
-                </div>
-                <div class="col-4 text-end">
-                  <strong>${{ subTotal }}</strong>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-12 text-end">
-                  <button class="btn btn-sm btn-success" (click)="redirectToCheckout()" [disabled]="!cartItems.length">
-                    Checkout
-                  </button>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
--->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
   <div class="container">
-
-    <!-- Logo -->
     <a class="navbar-brand fw-bold text-danger" href="#">
       <i class="fas fa-gavel"></i> Auction
     </a>
 
-    <!-- Toggler Button -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Navbar Content -->
     <div class="collapse navbar-collapse" id="navbarNav">
-
-      <!-- Left Side Links -->
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
           <a class="nav-link active fw-semibold" [routerLink]="'/home'" routerLinkActive="active">Home</a>
@@ -143,17 +20,331 @@
         </li>
       </ul>
 
-      <!-- Search Bar -->
       <form class="d-flex mx-auto w-50" (submit)="onSearch()">
         <input class="form-control me-2" type="search" placeholder="Search products" aria-label="Search"
                [(ngModel)]="searchQuery" name="searchQuery" data-cy="search-input" />
         <button class="btn btn-danger text-white" type="submit" data-cy="search-button">Search</button>
       </form>
 
-      <!-- Right Side (User & Cart) -->
+      <div class="d-flex align-items-center">
+        <div *ngIf="isLoggedIn" class="d-flex align-items-center">
+          <span class="me-3">Welcome, {{ username }}</span>
+          <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
+        </div>
+        <div *ngIf="!isLoggedIn">
+          <button class="btn btn-outline-danger" (click)="login()">Login</button>
+        </div>
+        <div class="ms-3 position-relative">
+          <button class="btn btn-outline-danger" (click)="toggleCart()">Cart <span class="badge bg-danger">{{ cartItemCount }}</span></button>
+          <div *ngIf="showCart" class="cart-dropdown position-absolute bg-white shadow p-3">
+            <div *ngIf="loading">Loading...</div>
+            <div *ngIf="!loading && cartItems.length > 0">
+              <ul class="list-unstyled">
+                <li *ngFor="let item of cartItems" class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <p class="mb-0">{{ item.productName }}</p>
+                    <small>Quantity: {{ item.quantity }} - Price: {{ item.price }}</small>
+                  </div>
+                  <button class="btn btn-sm btn-danger" (click)="removeItem(item.cartItemId)">Remove</button>
+                </li>
+              </ul>
+              <p class="fw-bold mt-2">Subtotal: {{ subTotal }}</p>
+            </div>
+            <div *ngIf="!loading && cartItems.length === 0">
+              <p>No items in the cart.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+
+
+
+
+<!--
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-danger" href="#">
+      <i class="fas fa-gavel"></i> Auction
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active fw-semibold" [routerLink]="'/home'" routerLinkActive="active">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" [routerLink]="'/create-product'" routerLinkActive="active">Create Product</a>
+        </li>
+      </ul>
+
+      <form class="d-flex mx-auto w-50" (submit)="onSearch()">
+        <input class="form-control me-2" type="search" placeholder="Search products" aria-label="Search"
+               [(ngModel)]="searchQuery" name="searchQuery" data-cy="search-input" />
+        <button class="btn btn-danger text-white" type="submit" data-cy="search-button">Search</button>
+      </form>
+
+      <div class="d-flex align-items-center">
+        <div *ngIf="isLoggedIn" class="d-flex align-items-center">
+          <span class="me-3">Welcome, {{ username }}</span>
+          <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
+        </div>
+        <div *ngIf="!isLoggedIn">
+          <button class="btn btn-outline-danger" (click)="login()">Login</button>
+        </div>
+        <div class="ms-3 position-relative">
+          <button class="btn btn-outline-danger" (click)="toggleCart()">Cart <span class="badge bg-danger">{{ cartItemCount }}</span></button>
+          <div *ngIf="showCart" class="cart-dropdown position-absolute bg-white shadow p-3">
+            <div *ngIf="loading">Loading...</div>
+            <div *ngIf="!loading && cartItems.length > 0">
+              <ul class="list-unstyled">
+                <li *ngFor="let item of cartItems" class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <p class="mb-0">{{ item.productName }}</p>
+                    <small>Quantity: {{ item.quantity }} - Price: {{ item.price }}</small>
+                  </div>
+                  <button class="btn btn-sm btn-danger" (click)="removeItem(item.cartItemId)">Remove</button>
+                </li>
+              </ul>
+              <p class="fw-bold mt-2">Subtotal: {{ subTotal }}</p>
+            </div>
+            <div *ngIf="!loading && cartItems.length === 0">
+              <p>No items in the cart.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+-->
+<!--
+          <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container">
+
+              <a class="navbar-brand fw-bold text-danger" href="#">
+                <i class="fas fa-gavel"></i> Auction
+              </a>
+
+
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+
+
+              <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav me-auto">
+                  <li class="nav-item">
+                    <a class="nav-link active fw-semibold" [routerLink]="'/home'" routerLinkActive="active">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link fw-semibold" [routerLink]="'/create-product'" routerLinkActive="active">Create Product</a>
+                  </li>
+                </ul>
+
+
+                <form class="d-flex mx-auto w-50" (submit)="onSearch()">
+                  <input class="form-control me-2" type="search" placeholder="Search products" aria-label="Search"
+                         [(ngModel)]="searchQuery" name="searchQuery" data-cy="search-input" />
+                  <button class="btn btn-danger text-white" type="submit" data-cy="search-button">Search</button>
+                </form>
+
+                <div class="d-flex align-items-center">
+                  <div *ngIf="isLoggedIn">
+                    <span>Welcome, {{ username }}</span>
+                    <button (click)="logout()">Logout</button>
+                  </div>
+                  <div *ngIf="!isLoggedIn">
+                    <button (click)="login()">Login</button>
+                  </div>
+                  <div>
+                    <input [(ngModel)]="searchQuery" placeholder="Search...">
+                    <button (click)="onSearch()">Search</button>
+                  </div>
+                  <div *ngIf="loading">Loading...</div>
+                  <div *ngIf="!loading && cartItems.length > 0">
+                    <p>Total Items: {{ cartItemCount }}</p>
+                    <ul>
+                      <li *ngFor="let item of cartItems">
+                        {{ item.productName }} - Quantity: {{ item.quantity }} - Price: {{ item.price }}
+                      </li>
+                    </ul>
+                    <p>Subtotal: {{ subTotal }}</p>
+                  </div>
+                  <div *ngIf="!loading && cartItems.length === 0">
+                    <p>No items in the cart.</p>
+                  </div>
+
+-->
+                  <!--
+                  <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom border-top">
+                    <div class="container">
+                      <a class="navbar-brand fs-2 fw-bold" href="#">
+                        <i class="fa fa-cart-shopping fs-2" style="color: #f54242;"></i>
+                        <span class="textBlur">auction</span>
+                      </a>
+
+                      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                      </button>
+
+                      <div class="collapse navbar-collapse justify-content-between" id="navbarColNav">
+
+                        <form class="d-flex mx-auto w-50" (ngSubmit)="onSearch()">
+                          <input class="form-control me-2" type="search" placeholder="Search products" aria-label="Search"
+                                 [(ngModel)]="searchQuery" name="searchQuery" data-cy="search-input" />
+                          <button class="btn btn-outline-success" type="submit" data-cy="search-button">Search</button>
+                        </form>
+
+
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-center">
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle fw-semibold text-uppercase me-1 text-danger" href="#" id="homeDropdown"
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Home
+                            </a>
+                          </li>
+
+                          <li class="nav-item">
+                            <a class="nav-link fw-semibold text-uppercase text-black me-1" href="#">Contact Us</a>
+                          </li>
+
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle fw-semibold text-uppercase text-black me-1" href="#" id="accountDropdown"
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Account
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                              <li><a class="dropdown-item" href="#">Your auctions</a></li>
+                              <li><a class="dropdown-item" href="#">Orders</a></li>
+                            </ul>
+                          </li>
+
+                          <div class="d-flex align-items-center">
+                            <a *ngIf="!isLoggedIn" (click)="login()" class="nav-link">Login</a>
+                            <a *ngIf="!isLoggedIn" (click)="register()" class="nav-link"> / Register</a>
+                            <a *ngIf="isLoggedIn" (click)="logout()" class="nav-link">Logout</a>
+
+                            <div *ngIf="isLoggedIn" class="nav-item dropdown">
+                              <span class="nav-link dropdown-toggle" id="userProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Welcome, {{ userProfile?.firstName }}!
+                              </span>
+                              <ul class="dropdown-menu" aria-labelledby="userProfileDropdown">
+                                <li><a class="dropdown-item" [routerLink]="'/profile'" routerLinkActive="active">Manage Profile</a></li>
+                              </ul>
+                            </div>
+                          </div>
+
+
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle cart fw-semibold text-uppercase text-black me-1" href="#"
+                               id="cartDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="fa fa-cart-shopping fs-5" style="color: #202122;"></i>
+                              <span class="position-absolute translate-middle badge rounded-pill bg-danger">
+                                {{ cartItems.length || 0 }}
+                                <span class="visually-hidden">unread messages</span>
+                              </span>
+                            </a>
+
+                            <div class="dropdown-menu">
+                              <div class="CartContainer">
+                                <div class="row">
+                                  <div class="col-6">Your Cart</div>
+                                  <div class="col-6 text-end text-danger">Remove All</div>
+                                </div>
+
+                                <div class="row pt-1" *ngFor="let cart of cartItems">
+                                  <div class="col-4">
+                                    <img class="img-fluid" style="height: 30px; border-radius: 50%;" [src]="cart.productImageUrl">
+                                  </div>
+                                  <div class="col-3">{{ cart.productName }}</div>
+                                  <div class="col-2">{{ cart.quantity }}</div>
+                                  <div class="col-2 text-end">{{ cart.price }}</div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-3"></div>
+                                  <div class="col-9"><hr></div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-4">
+                                    <div class="Subtotal">Sub-Total</div>
+                                    <div><small>{{ cartItems.length || 0 }} items</small></div>
+                                  </div>
+                                  <div class="col-4 text-end">
+                                    <strong>${{ subTotal }}</strong>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-12 text-end">
+                                    <button class="btn btn-sm btn-success" (click)="redirectToCheckout()" [disabled]="!cartItems.length">
+                                      Checkout
+                                    </button>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </nav>
+                  -->
+
+<!--
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container">
+
+    <a class="navbar-brand fw-bold text-danger" href="#">
+      <i class="fas fa-gavel"></i> Auction
+    </a>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active fw-semibold" [routerLink]="'/home'" routerLinkActive="active">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" [routerLink]="'/create-product'" routerLinkActive="active">Create Product</a>
+        </li>
+      </ul>
+
+
+      <form class="d-flex mx-auto w-50" (submit)="onSearch()">
+        <input class="form-control me-2" type="search" placeholder="Search products" aria-label="Search"
+               [(ngModel)]="searchQuery" name="searchQuery" data-cy="search-input" />
+        <button class="btn btn-danger text-white" type="submit" data-cy="search-button">Search</button>
+      </form>
+
       <div class="d-flex align-items-center">
 
-        <!-- Authentication Links -->
         <ng-container *ngIf="!isLoggedIn">
           <a (click)="login()" class="nav-link fw-semibold">Login</a>
           <span class="mx-1 text-muted">/</span>
@@ -161,7 +352,6 @@
         </ng-container>
         <a *ngIf="isLoggedIn" (click)="logout()" class="nav-link fw-semibold text-danger">Logout</a>
 
-        <!-- User Dropdown -->
         <div *ngIf="isLoggedIn" class="nav-item dropdown ms-3">
           <a class="nav-link dropdown-toggle fw-semibold text-dark" id="userDropdown" role="button"
              data-bs-toggle="dropdown" aria-expanded="false">
@@ -174,7 +364,7 @@
           </ul>
         </div>
 
-        <!-- Cart Icon -->
+
         <div class="ms-3">
           <a [routerLink]="['/cart']" routerLinkActive="active" class="position-relative">
             <i class="fas fa-shopping-cart text-dark fs-4"></i>
@@ -190,7 +380,7 @@
   </div>
 </nav>
 
-
+-->
 <!--
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">

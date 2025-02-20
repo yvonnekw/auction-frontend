@@ -16,7 +16,8 @@ import {NavbarComponent} from './pages/navbar/navbar.component';
   imports: [RouterOutlet, HomeComponent,
     ProductDetailComponent, ProductListComponent,
     AuctionPageComponent, RouterOutlet,
-  BuyNowComponent, SubmitBidComponent, RouterLink,RouterLinkActive, CreateProductComponent, NavbarComponent],
+  BuyNowComponent, SubmitBidComponent,
+    RouterLink,RouterLinkActive, CreateProductComponent, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

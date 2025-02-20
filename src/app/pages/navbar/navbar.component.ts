@@ -1,4 +1,369 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { KeycloakService } from '../../services/keycloak/keycloak.service';
+import { CartControllerService } from '../../services/cart/services/cart-controller.service';
+import { Subscription } from 'rxjs';
+import { CartService } from '../../services/shared/cart-service';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
+  imports: [NgIf, NgFor, CommonModule, RouterLink, FormsModule],
+  standalone: true,
+})
+export class NavbarComponent implements OnInit, OnDestroy {
+  isLoggedIn = false;
+  username?: string;
+  userProfile: any;
+  cartItemCount: number = 0;
+  searchQuery: string = '';
+  cartItems: any[] = [];
+  subTotal: number = 0;
+  loading: boolean = false;
+  showCart: boolean = false;
+
+  router = inject(Router);
+  cartService = inject(CartService);
+  keycloakService = inject(KeycloakService);
+  cartControllerService = inject(CartControllerService);
+
+  private cartSubscription!: Subscription;
+
+  async ngOnInit(): Promise<void> {
+    try {
+      await this.checkLoginStatus();
+
+      if (this.isLoggedIn && this.username) {
+        this.loading = true; // Start loading state
+
+        const token = await this.keycloakService.getToken();
+        if (token) {
+          this.fetchCartItems(token, this.username);
+        }
+      } else {
+        this.loading = false; // Handle scenario where user is not logged in
+      }
+    } catch (error) {
+      console.error("Error fetching cart or login status:", error);
+      this.loading = false;
+    }
+  }
+
+  async fetchCartItems(token: string, username: string) {
+    try {
+      const params = {
+        Authorization: `Bearer ${token}`,
+        'X-Username': username
+      };
+
+      this.cartSubscription = this.cartControllerService.getCartItems(params).subscribe(cart => {
+        console.log("Cart response from API:", cart);
+        const items = cart.items || [];
+        console.log("Extracted cart items:", items);
+
+        this.cartItems = items; // Directly update component variable
+        this.cartItemCount = items.reduce((count, item) => count + (item.quantity || 0), 0);
+
+        this.subTotal = items.reduce((sum, item) => sum + (item.price! * item.quantity! || 0), 0);
+
+        this.loading = false;
+      });
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+      this.loading = false;
+    }
+  }
+
+  async checkLoginStatus(): Promise<void> {
+    this.isLoggedIn = this.keycloakService.isLoggedIn();
+    if (this.isLoggedIn) {
+      this.userProfile = await this.keycloakService.loadUserProfile();
+      console.log("User profile:", this.userProfile);
+      if (this.userProfile) {
+        this.username = this.userProfile.username;
+      }
+    }
+  }
+
+  toggleCart(): void {
+    this.showCart = !this.showCart;
+  }
+
+  removeItem(cartItemId: number): void {
+    // Implement the logic to remove an item from the cart
+    console.log("Removing item with ID:", cartItemId);
+  }
+
+  async login(): Promise<void> {
+    await this.keycloakService.login();
+  }
+
+  async logout(): Promise<void> {
+    await this.keycloakService.logout();
+  }
+
+  onSearch(): void {
+    // Implement the search logic
+    console.log("Searching for:", this.searchQuery);
+  }
+
+  ngOnDestroy(): void {
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();
+    }
+  }
+}
+/*
+import { Component, inject, OnInit, OnDestroy } from '@angular/core'
+import { Router, RouterLink } from '@angular/router';
+import { KeycloakService } from '../../services/keycloak/keycloak.service';
+import { CartControllerService } from '../../services/cart/services/cart-controller.service';
+import { Subscription } from 'rxjs';
+import { CartService } from '../../services/shared/cart-service';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
+  imports: [NgIf, NgFor, CommonModule, RouterLink, FormsModule],
+  standalone: true,
+})
+export class NavbarComponent implements OnInit, OnDestroy {
+  isLoggedIn = false;
+  username?: string;
+  userProfile: any;
+  cartItemCount: number = 0;
+  searchQuery: string = '';
+  cartItems: any[] = [];
+  subTotal: number = 0;
+  loading: boolean = false;
+  showCart: boolean = false;
+
+  router = inject(Router);
+  cartService = inject(CartService);
+  keycloakService = inject(KeycloakService);
+  cartControllerService = inject(CartControllerService);
+
+  private cartSubscription!: Subscription;
+
+  async ngOnInit(): Promise<void> {
+    try {
+      await this.checkLoginStatus();
+
+      if (this.isLoggedIn && this.username) {
+        this.loading = true; // Start loading state
+
+        const token = await this.keycloakService.getToken();
+        if (token) {
+          this.fetchCartItems(token, this.username);
+        }
+      } else {
+        this.loading = false; // Handle scenario where user is not logged in
+      }
+    } catch (error) {
+      console.error("Error fetching cart or login status:", error);
+      this.loading = false;
+    }
+  }
+
+  async fetchCartItems(token: string, username: string) {
+    try {
+      const params = {
+        Authorization: `Bearer ${token}`,
+        'X-Username': username
+      };
+
+      this.cartSubscription = this.cartControllerService.getCartItems(params).subscribe(cart => {
+        console.log("Cart response from API:", cart);
+        const items = cart.items || [];
+        console.log("Extracted cart items:", items);
+
+        this.cartItems = items; // Directly update component variable
+        this.cartItemCount = items.reduce((count, item) => count + (item.quantity || 0), 0);
+
+        this.subTotal = items.reduce((sum, item) => sum + (item.price! * item.quantity! || 0), 0);
+
+        this.loading = false;
+      });
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+      this.loading = false;
+    }
+  }
+
+  async checkLoginStatus(): Promise<void> {
+    this.isLoggedIn = this.keycloakService.isLoggedIn();
+    if (this.isLoggedIn) {
+      this.userProfile = await this.keycloakService.loadUserProfile();
+      console.log("User profile:", this.userProfile);
+      if (this.userProfile) {
+        this.username = this.userProfile.username;
+      }
+    }
+  }
+
+  toggleCart(): void {
+    this.showCart = !this.showCart;
+  }
+
+  removeItem(cartItemId: number): void {
+    // Implement the logic to remove an item from the cart
+    console.log("Removing item with ID:", cartItemId);
+  }
+
+  async login(): Promise<void> {
+    await this.keycloakService.login();
+  }
+
+  async logout(): Promise<void> {
+    await this.keycloakService.logout();
+  }
+
+  onSearch(): void {
+    // Implement the search logic
+    console.log("Searching for:", this.searchQuery);
+  }
+
+  ngOnDestroy(): void {
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();
+    }
+  }
+}
+*/
+
+
+/*
+
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import {Router, RouterLink} from '@angular/router';
+import { KeycloakService } from '../../services/keycloak/keycloak.service';
+import { CartControllerService } from '../../services/cart/services/cart-controller.service';
+import { Subscription } from 'rxjs';
+import { CartService } from '../../services/shared/cart-service';
+import { CartItem } from '../../services/cart/models/cart-item';
+
+
+import {CommonModule, NgFor, NgIf} from '@angular/common';
+import {FormsModule, NgModel} from '@angular/forms';
+
+@Component({
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
+  imports: [NgIf, NgFor, CommonModule, RouterLink, FormsModule],
+  standalone: true,
+})
+export class NavbarComponent implements OnInit, OnDestroy {
+  isLoggedIn = false;
+  username?: string;
+  userProfile: any;
+  cartItemCount: number = 0;
+  searchQuery: string = '';
+  cartItems: any[] = [];
+  subTotal: number = 0;
+  loading: boolean = false;
+  showCart: boolean = false;
+
+  router = inject(Router);
+  cartService = inject(CartService);
+  keycloakService = inject(KeycloakService);
+  cartControllerService = inject(CartControllerService)
+
+  private cartSubscription!: Subscription;
+
+  async ngOnInit(): Promise<void> {
+    try {
+      await this.checkLoginStatus();
+
+      if (this.isLoggedIn && this.username) {
+        this.loading = true; // Start loading state
+
+        const token = await this.keycloakService.getToken();
+        if (token) {
+          this.fetchCartItems(token, this.username);
+        }
+      } else {
+        this.loading = false; // Handle scenario where user is not logged in
+      }
+    } catch (error) {
+      console.error("Error fetching cart or login status:", error);
+      this.loading = false;
+    }
+  }
+
+  async fetchCartItems(token: string, username: string) {
+    try {
+      const params = {
+        'Authorization': `Bearer ${token}`,
+        'X-Username': username
+      };
+
+      this.cartSubscription = this.cartControllerService.getCartItems(params).subscribe(cart => {
+        console.log("Cart response from API:", cart);
+        const items = cart.items || [];
+        console.log("Extracted cart items:", items);
+
+        this.cartItems = items; // Directly update component variable
+        this.cartItemCount = items.reduce((count, item) => count + (item.quantity || 0), 0);
+
+        this.subTotal = items.reduce((sum, item) => sum + (item.price! * item.quantity! || 0), 0);
+
+        this.loading = false;
+      });
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+      this.loading = false;
+    }
+  }
+
+  async checkLoginStatus(): Promise<void> {
+    this.isLoggedIn = await this.keycloakService.isAuthenticated();
+    if (this.isLoggedIn) {
+      this.userProfile = await this.keycloakService.getUserProfileData();
+      this.username = this.userProfile.username;
+    }
+  }
+
+  toggleCart(): void {
+    this.showCart = !this.showCart;
+  }
+
+  removeItem(cartItemId: number): void {
+    // Implement the logic to remove an item from the cart
+    console.log("Removing item with ID:", cartItemId);
+  }
+
+  async login(): Promise<void> {
+    await this.keycloakService.login();
+  }
+
+  async logout(): Promise<void> {
+    await this.keycloakService.logout();
+  }
+
+  ngOnDestroy(): void {
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();
+    }
+  }
+
+  onSearch(): void {
+    if (this.searchQuery.trim()) {
+      this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
+    }
+  }
+}
+
+
+ */
+/*
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { KeycloakService } from '../../services/keycloak/keycloak.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
@@ -9,7 +374,7 @@ import { map } from 'rxjs/operators';
 import { GetCartItems$Params } from '../../services/cart/fn/cart-controller/get-cart-items';
 import { CartItem } from '../../services/cart/models/cart-item';
 import { RemoveItem$Params } from '../../services/cart/fn/cart-controller/remove-item';
-import { CartService } from '../../services/shared/CartService';
+import { CartService } from '../../services/shared/cart-service';
 
 @Component({
   selector: 'app-navbar',
@@ -114,6 +479,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     }
   */
+/*
   // Remove item from the cart
   async removeFromCart(itemId: number): Promise<void> {
     const token = await this.keycloakService.getToken();
