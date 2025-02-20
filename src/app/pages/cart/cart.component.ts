@@ -1,3 +1,39 @@
+import { Component, OnInit } from '@angular/core';
+import { CartService } from '../../services/shared/cart-service';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
+
+@Component({
+  selector: 'app-cart',
+  templateUrl: './cart.component.html',
+  styleUrls: ['./cart.component.scss'],
+  imports: [NgIf, NgFor, CommonModule],
+  standalone: true,
+})
+export class CartComponent implements OnInit {
+  cartItems: any[] = [];
+  cartItemCount: number = 0;
+
+  constructor(private cartService: CartService) {}
+
+  ngOnInit(): void {
+    this.subscribeToCart();
+    // Fetch cart items on component initialization
+    const token = 'your-token'; // Replace with actual token
+    const username = 'your-username'; // Replace with actual username
+    this.cartService.fetchCartItems(token, username);
+  }
+
+  private subscribeToCart(): void {
+    this.cartService.cartItems$.subscribe(items => {
+      this.cartItems = items;
+    });
+
+    this.cartService.cartItemCount$.subscribe(count => {
+      this.cartItemCount = count;
+    });
+  }
+}
+/*
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { KeycloakService } from '../../services/keycloak/keycloak.service';
@@ -14,6 +50,30 @@ import { CartService } from '../../services/shared/CartService';
   styleUrls: ['./cart.component.scss'],
   imports: [CommonModule],
 })
+
+export class CartComponent implements OnInit {
+  cartItems: any[] = [];
+  cartItemCount: number = 0;
+
+  constructor(private cartService: CartService) {
+  }
+
+  ngOnInit(): void {
+    this.subscribeToCart();
+  }
+
+  private subscribeToCart(): void {
+    this.cartService.cartItems$.subscribe(items => {
+      this.cartItems = items;
+    });
+
+    this.cartService.cartItemCount$.subscribe(count => {
+      this.cartItemCount = count;
+    });
+  }
+}
+*/
+/*
 export class CartComponent implements OnInit {
   cartItems: any[] = [];
   cartItemCount: number = 0;
