@@ -9,6 +9,7 @@ import {BuyNowComponent} from './pages/buy-now/buy-now.component';
 import {SubmitBidComponent} from './pages/submit-bid/submit-bid.component';
 import {CreateProductComponent} from './pages/create-product/create-product.component';
 import {NavbarComponent} from './pages/navbar/navbar.component';
+import {CartComponent} from './pages/cart/cart.component';
 
 @Component({
   selector: 'app-root',

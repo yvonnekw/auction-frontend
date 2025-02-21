@@ -177,7 +177,7 @@ export class KeycloakService {
       return token;
     } catch (err) {
       console.error('Failed to refresh token', err);
-
+      //await this.login()
       return undefined;
       /*
       // Redirect user to the login page

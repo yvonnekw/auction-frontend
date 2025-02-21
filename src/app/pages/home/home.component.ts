@@ -134,7 +134,6 @@ export class HomeComponent implements OnInit {
     console.error('Product ID is undefined. Cannot add to cart.');
   }
 
-
   async addToCart(productId: number, quantity: number = 1): Promise<void> {
     try {
       const token = await this.keycloakService.getToken();
@@ -142,6 +141,7 @@ export class HomeComponent implements OnInit {
 
       if (!token || !username) {
         console.error('Missing token or username');
+        await this.login()
         return;
       }
 
