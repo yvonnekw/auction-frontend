@@ -1,0 +1,10 @@
+<p>search-results works!</p>
+<div class="container">
+  <h2>Search Results for "{{ query }}"</h2>
+  <div *ngIf="products.length === 0">No products found</div>
+  <div *ngFor="let product of products" class="product-card">
+    <!-- Display product details here -->
+    <p>{{ product.productName }}</p>
+    <p>{{ product.description }}</p>
+  </div>
+</div>

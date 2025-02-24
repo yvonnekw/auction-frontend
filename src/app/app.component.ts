@@ -11,13 +11,16 @@ import {CreateProductComponent} from './pages/create-product/create-product.comp
 import {NavbarComponent} from './pages/navbar/navbar.component';
 import {CartComponent} from './pages/cart/cart.component';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, HomeComponent,
     ProductDetailComponent, ProductListComponent,
     AuctionPageComponent, RouterOutlet,
-  BuyNowComponent, SubmitBidComponent, RouterLink,RouterLinkActive, CreateProductComponent, NavbarComponent],
+  BuyNowComponent, SubmitBidComponent,
+    RouterLink,RouterLinkActive, CreateProductComponent, NavbarComponent,
+  BuyNowComponent, SubmitBidComponent, RouterLink,RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

@@ -12,6 +12,9 @@
         <div class="card-body" data-cy="product-card-body">
           <h5 class="card-title" data-cy="product-name">{{ product.productName }}</h5>
           <p class="card-text" data-cy="product-description">{{ product.description }}</p>
+          <div class="col-4">
+            <img class="img-fluid" style="height: 30px;border-radius: 50%;" [src]="product.productImageUrl" class="card-img-top" alt="product">
+          </div>
           <p class="card-text" data-cy="product-price"><strong>Price: ${{ product.buyNowPrice }}</strong></p>
 
           <div data-cy="bid-button-container">

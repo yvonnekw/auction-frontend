@@ -11,6 +11,7 @@ export interface ProductResponse {
   isAvailableForBuyNow?: boolean;
   isSold?: boolean;
   productId?: number;
+  productImageUrl?: string;
   productName?: string;
   productSize?: string;
   quantity?: number;
