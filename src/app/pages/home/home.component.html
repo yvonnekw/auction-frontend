@@ -21,14 +21,14 @@
             <!-- Buy Now and Submit Bid Buttons -->
             <div *ngIf="product.isAvailableForBuyNow" data-cy="buy-now-container">
               <button
-                class="btn btn-link"
+                class="btn btn-sm btn-success"
                 (click)="buyNow(product.productId!, 1)"
                 data-cy="buy-now-button"
               >
                 Buy It Now
               </button>
               <button
-                class="btn btn-link"
+                class="btn btn-sm btn-success"
                 (click)="submitBid(product)"
                 data-cy="submit-bid-button"
               >

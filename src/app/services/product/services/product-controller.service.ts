@@ -36,6 +36,7 @@ export class ProductControllerService extends BaseService {
     super(config, http);
   }
 
+
   /** Path part for operation `getProductById()` */
   static readonly GetProductByIdPath = '/api/v1/products/{productId}';
 
