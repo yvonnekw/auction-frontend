@@ -10,27 +10,21 @@ import { RequestBuilder } from '../../request-builder';
 
 
 export interface GetCart$Params {
-  Authorization: string;
-  'X-Username': string;
 }
 
-export function getCart(http: HttpClient, rootUrl: string, params: GetCart$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-}>> {
+export function getCart(http: HttpClient, rootUrl: string, params?: GetCart$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
   const rb = new RequestBuilder(rootUrl, getCart.PATH, 'get');
   if (params) {
-    rb.header('Authorization', params.Authorization, {});
-    rb.header('X-Username', params['X-Username'], {});
   }
 
   return http.request(
-    rb.build({ responseType: 'blob', accept: '*/*', context })
+    rb.build({ responseType: 'json', accept: '*/*', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<{
-      }>;
+      return r as StrictHttpResponse<string>;
     })
   );
 }
 
-getCart.PATH = '/api/v1/carts/get-user-cart';
+getCart.PATH = '/api/v1/carts';

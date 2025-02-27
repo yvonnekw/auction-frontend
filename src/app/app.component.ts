@@ -10,6 +10,7 @@ import {SubmitBidComponent} from './pages/submit-bid/submit-bid.component';
 import {CreateProductComponent} from './pages/create-product/create-product.component';
 import {NavbarComponent} from './pages/navbar/navbar.component';
 import {CartComponent} from './pages/cart/cart.component';
+import {HttpClientJsonpModule} from '@angular/common/http';
 
 
 @Component({
@@ -19,8 +20,8 @@ import {CartComponent} from './pages/cart/cart.component';
     ProductDetailComponent, ProductListComponent,
     AuctionPageComponent, RouterOutlet,
   BuyNowComponent, SubmitBidComponent,
-    RouterLink,RouterLinkActive, CreateProductComponent, NavbarComponent,
-  BuyNowComponent, SubmitBidComponent, RouterLink,RouterLinkActive],
+    RouterLink, RouterLinkActive, CreateProductComponent, NavbarComponent,
+  BuyNowComponent, SubmitBidComponent, RouterLink, RouterLinkActive, HttpClientJsonpModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
