@@ -10,14 +10,12 @@ import { RequestBuilder } from '../../request-builder';
 
 
 export interface RemoveItem$Params {
-  Authorization: string;
   itemId: number;
 }
 
 export function removeItem(http: HttpClient, rootUrl: string, params: RemoveItem$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, removeItem.PATH, 'delete');
   if (params) {
-    rb.header('Authorization', params.Authorization, {});
     rb.path('itemId', params.itemId, {});
   }
 

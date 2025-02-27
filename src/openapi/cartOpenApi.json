@@ -105,7 +105,7 @@
         "tags": [
           "cart-controller"
         ],
-        "operationId": "getPayment",
+        "operationId": "getCart",
         "responses": {
           "200": {
             "description": "OK",
@@ -163,7 +163,7 @@
         "tags": [
           "cart-controller"
         ],
-        "operationId": "getCart",
+        "operationId": "getCart_1",
         "parameters": [
           {
             "name": "Authorization",
@@ -226,14 +226,6 @@
         ],
         "operationId": "removeItem",
         "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "itemId",
             "in": "path",
@@ -383,6 +375,13 @@
             "type": "integer",
             "format": "int64"
           },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "number"
+          },
           "productName": {
             "type": "string"
           },
@@ -391,13 +390,6 @@
           },
           "productImageUrl": {
             "type": "string"
-          },
-          "quantity": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "price": {
-            "type": "number"
           }
         }
       },

@@ -48,7 +48,9 @@ a:hover {
     right: 0px !important;
     margin-top: var(--bs-dropdown-spacer);
 }
-.CartContainer {
-    width: 300px;
-    padding: 5px;
+.cart-container {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }

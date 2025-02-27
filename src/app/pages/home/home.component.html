@@ -13,13 +13,20 @@
           <h5 class="card-title" data-cy="product-name">{{ product.productName }}</h5>
           <p class="card-text" data-cy="product-description">{{ product.description }}</p>
           <div class="col-4">
-            <img class="img-fluid" style="height: 30px;border-radius: 50%;" [src]="product.productImageUrl" class="card-img-top" alt="product">
+            <img
+              class="img-fluid"
+              style="height: 100px; border-radius: 50%;"
+              *ngIf="product.productImageUrl"
+              [src]="getImageUrl(product.productImageUrl!) | async"
+              class="card-img-top"
+              alt="product"
+            />
           </div>
           <p class="card-text" data-cy="product-price"><strong>Price: ${{ product.buyNowPrice }}</strong></p>
 
-          <div data-cy="bid-button-container">
+          <div data-cy="bid-button-container" class="d-flex flex-column gap-2">
             <!-- Buy Now and Submit Bid Buttons -->
-            <div *ngIf="product.isAvailableForBuyNow" data-cy="buy-now-container">
+            <div *ngIf="product.isAvailableForBuyNow" data-cy="buy-now-container" class="d-flex flex-column gap-2">
               <button
                 class="btn btn-sm btn-success"
                 (click)="buyNow(product.productId!, 1)"
@@ -46,6 +53,67 @@
                 Add to Cart
               </button>
             </div>
+          </div>
+
+          <div>
+            <p class="seller" data-cy="seller">{{ product.username }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+
+<div class="container" data-cy="container">
+  <div *ngIf="isLoading">
+    <div>
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+  <div class="row" data-cy="products-row">
+    <div class="col-md-4" *ngFor="let product of products" data-cy="product-card">
+      <div class="card mb-4" data-cy="product-card-inner">
+        <div class="card-body" data-cy="product-card-body">
+          <h5 class="card-title" data-cy="product-name">{{ product.productName }}</h5>
+          <p class="card-text" data-cy="product-description">{{ product.description }}</p>
+          <div class="col-4">
+            <img class="img-fluid" style="height: 100px; border-radius: 50%;" [src]={{product.productImageUrl}} class="card-img-top" alt="product">
+          </div>
+          <p class="card-text" data-cy="product-price"><strong>Price: ${{ product.buyNowPrice }}</strong></p>
+
+          <div data-cy="bid-button-container" class="d-flex flex-column gap-2">
+
+            <div *ngIf="product.isAvailableForBuyNow" data-cy="buy-now-container" class="d-flex flex-column gap-2">
+              <button
+                class="btn btn-sm btn-success"
+                (click)="buyNow(product.productId!, 1)"
+                data-cy="buy-now-button"
+              >
+                Buy It Now
+              </button>
+              <button
+                class="btn btn-sm btn-success"
+                (click)="submitBid(product)"
+                data-cy="submit-bid-button"
+              >
+                Submit Bid
+              </button>
+            </div>
+
+
+            <div *ngIf="!product.isAvailableForBuyNow" data-cy="add-to-cart-container">
+              <button
+                class="btn btn-primary"
+                (click)="product.productId ? addToCart(product.productId, 1) : handleUndefinedProductId()"
+                data-cy="add-to-cart-button"
+              >
+                Add to Cart
+              </button>
+            </div>
 
           </div>
 
@@ -57,6 +125,71 @@
     </div>
   </div>
 </div>
+
+-->
+<!--
+
+<div class="container" data-cy="container">
+  <div *ngIf="isLoading">
+    <div>
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+  <div class="row" data-cy="products-row">
+    <div class="col-md-4" *ngFor="let product of products" data-cy="product-card">
+      <div class="card mb-4" data-cy="product-card-inner">
+        <div class="card-body" data-cy="product-card-body">
+          <h5 class="card-title" data-cy="product-name">{{ product.productName }}</h5>
+          <p class="card-text" data-cy="product-description">{{ product.description }}</p>
+          <div class="col-4">
+            <img class="img-fluid" style="height: 30px;border-radius: 50%;" [src]="product.productImageUrl" class="card-img-top" alt="product">
+          </div>
+          <p class="card-text" data-cy="product-price"><strong>Price: ${{ product.buyNowPrice }}</strong></p>
+
+          <div data-cy="bid-button-container">
+
+            <div *ngIf="product.isAvailableForBuyNow" data-cy="buy-now-container">
+              <button
+                class="btn btn-sm btn-success"
+                (click)="buyNow(product.productId!, 1)"
+                data-cy="buy-now-button"
+              >
+                Buy It Now
+              </button>
+              <button
+                class="btn btn-sm btn-success"
+                (click)="submitBid(product)"
+                data-cy="submit-bid-button"
+              >
+                Submit Bid
+              </button>
+            </div>
+
+
+            <div *ngIf="!product.isAvailableForBuyNow" data-cy="add-to-cart-container">
+              <button
+                class="btn btn-primary"
+                (click)="product.productId ? addToCart(product.productId, 1) : handleUndefinedProductId()"
+                data-cy="add-to-cart-button"
+              >
+                Add to Cart
+              </button>
+            </div>
+
+          </div>
+
+          <div>
+            <p class="seller" data-cy="seller">{{ product.username }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+-->
 
 <!--
 
