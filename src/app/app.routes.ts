@@ -11,6 +11,7 @@ import {CreateProductComponent} from './pages/create-product/create-product.comp
 import {CartComponent} from './pages/cart/cart.component';
 import {NavbarComponent} from './pages/navbar/navbar.component';
 import {PaymentComponent} from './pages/payment/payment.component';
+import {OrdersComponent} from './pages/orders/orders.component';
 
 export const routes: Routes = [
   {
@@ -39,6 +40,11 @@ export const routes: Routes = [
   {
     path: 'cart',
     component: CartComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'order',
+    component: OrdersComponent,
     canActivate: [AuthGuard]
   },
   {
