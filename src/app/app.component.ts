@@ -11,6 +11,7 @@ import {NavbarComponent} from './pages/navbar/navbar.component';
 import {CartComponent} from './pages/cart/cart.component';
 import {HttpClientJsonpModule} from '@angular/common/http';
 import {OrdersComponent} from './pages/orders/orders.component';
+import {SellingComponent} from './pages/selling/selling.component';
 
 
 @Component({
@@ -33,7 +34,8 @@ import {OrdersComponent} from './pages/orders/orders.component';
     RouterLink,
     RouterLinkActive,
     HttpClientJsonpModule,
-    OrdersComponent],
+    OrdersComponent,
+  SellingComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
