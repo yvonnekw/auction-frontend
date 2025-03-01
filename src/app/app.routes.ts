@@ -11,6 +11,9 @@ import {CreateProductComponent} from './pages/create-product/create-product.comp
 import {CartComponent} from './pages/cart/cart.component';
 import {NavbarComponent} from './pages/navbar/navbar.component';
 import {PaymentComponent} from './pages/payment/payment.component';
+import {OrdersComponent} from './pages/orders/orders.component';
+import {SellingComponent} from './pages/selling/selling.component';
+import {ListItemComponent} from './pages/list-item/list-item.component';
 
 export const routes: Routes = [
   {
@@ -42,6 +45,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'order',
+    component: OrdersComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'login',
     component: LoginComponent
   },
@@ -60,13 +68,26 @@ export const routes: Routes = [
     component: CreateProductComponent
   },
   {
+    path: 'payment',
+    component: PaymentComponent,
+    canActivate: [AuthGuard]
+  },
+
+  {
+    path: 'selling',
+    component: SellingComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'list-item',
+    component: ListItemComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     component: HomeComponent
   },
 
-  { path: 'payment',
-    component: PaymentComponent,
-    canActivate: [AuthGuard]
-  },
+
 
 ];

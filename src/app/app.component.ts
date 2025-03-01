@@ -1,5 +1,4 @@
-
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterModule, RouterOutlet} from '@angular/router';
 import {HomeComponent} from './pages/home/home.component';
 import {ProductDetailComponent} from './pages/product-detail/product-detail.component';
@@ -11,17 +10,32 @@ import {CreateProductComponent} from './pages/create-product/create-product.comp
 import {NavbarComponent} from './pages/navbar/navbar.component';
 import {CartComponent} from './pages/cart/cart.component';
 import {HttpClientJsonpModule} from '@angular/common/http';
+import {OrdersComponent} from './pages/orders/orders.component';
+import {SellingComponent} from './pages/selling/selling.component';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HomeComponent,
-    ProductDetailComponent, ProductListComponent,
-    AuctionPageComponent, RouterOutlet,
-  BuyNowComponent, SubmitBidComponent,
-    RouterLink, RouterLinkActive, CreateProductComponent, NavbarComponent,
-  BuyNowComponent, SubmitBidComponent, RouterLink, RouterLinkActive, HttpClientJsonpModule],
+  imports: [RouterOutlet,
+    HomeComponent,
+    ProductDetailComponent,
+    ProductListComponent,
+    AuctionPageComponent,
+    RouterOutlet,
+    BuyNowComponent,
+    SubmitBidComponent,
+    RouterLink,
+    RouterLinkActive,
+    CreateProductComponent,
+    NavbarComponent,
+    BuyNowComponent,
+    SubmitBidComponent,
+    RouterLink,
+    RouterLinkActive,
+    HttpClientJsonpModule,
+    OrdersComponent,
+  SellingComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

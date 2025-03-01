@@ -44,7 +44,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
           this.fetchCartItems(token, this.username);
         }
       } else {
-        this.loading = false; // Handle scenario where user is not logged in
+        this.loading = false;
       }
     } catch (error) {
       console.error("Error fetching cart or login status:", error);
@@ -64,7 +64,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         const items = cart.items || [];
         console.log("Extracted cart items:", items);
 
-        this.cartItems = items; // Directly update component variable
+        this.cartItems = items;
         this.cartItemCount = items.reduce((count, item) => count + (item.quantity || 0), 0);
 
         this.subTotal = items.reduce((sum, item) => sum + (item.price! * item.quantity! || 0), 0);
