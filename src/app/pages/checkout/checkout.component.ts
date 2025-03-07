@@ -1,3 +1,198 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { OrderControllerService } from '../../services/order/services/order-controller.service';
+import { KeycloakService } from '../../services/keycloak/keycloak.service';
+import { CartControllerService } from '../../services/cart/services/cart-controller.service';
+
+import { ClearCart$Params } from '../../services/cart/fn/cart-controller/clear-cart';
+import { CreateOrder$Params } from '../../services/order/fn/order-controller/create-order';
+import {CommonModule, NgFor, NgIf} from '@angular/common';
+
+@Component({
+  selector: 'app-checkout',
+  standalone: true,
+  imports: [NgIf, NgFor, CommonModule],
+  templateUrl: './checkout.component.html',
+  styleUrls: ['./checkout.component.scss']
+})
+export class CheckoutComponent implements OnInit {
+  cartItems: Array<{ productId: number; productName: string; quantity: number; price: number }> = [];
+  totalAmount: number = 0;
+  username: string = '';
+  token: string = '';
+  firstName: string = '';
+  lastName: string = '';
+  email: string = '';
+
+  constructor(
+    private orderService: OrderControllerService,
+    private router: Router,
+    private keycloakService: KeycloakService,
+    private cartService: CartControllerService
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.cartItems = navigation.extras.state['cartItems'];
+      this.totalAmount = navigation.extras.state['totalAmount'];
+    }
+  }
+
+  async ngOnInit() {
+    await this.loadUserDetails();
+  }
+
+  async loadUserDetails(): Promise<void> {
+    this.username = (await this.keycloakService.getUsernameFromToken()) || '';
+    this.token = (await this.keycloakService.getToken()) || '';
+    this.firstName = this.keycloakService.getFirstName() || '';
+    this.lastName = this.keycloakService.getLastName() || '';
+    this.email = this.keycloakService.getEmail() || '';
+  }
+
+  onSubmit(): void {
+    const orderRequest = {
+      reference: 'ORDER-REF-001',
+      products: this.cartItems.map(item => ({ productId: item.productId, quantity: item.quantity })),
+      totalAmount: this.totalAmount,
+    };
+
+    const paymentRequest = {
+      paymentMethod: 'CREDIT_CARD',
+      reference: 'ORDER-REF-001',
+      paymentDetails: {
+        cardNumber: '4111111111111111',
+        cardExpiry: '12/25',
+        cardCVC: '123',
+      }
+    };
+
+    const param ={
+      orderRequest,
+      paymentRequest
+    }
+
+    const newOrder: CreateOrder$Params = {
+      Authorization: `Bearer ${this.token}`,
+      'X-Username': this.username,
+      'X-FirstName': this.firstName,
+      'X-LastName': this.lastName,
+      'X-Email': this.email,
+      body: {
+        orderRequest,
+        paymentRequest
+      }
+    };
+
+    this.orderService.createOrder(newOrder).subscribe(response => {
+      console.log('Order created:', response);
+      const clearCartParams: ClearCart$Params = {
+        Authorization: `Bearer ${this.token}`,
+        'X-Username': this.username
+      };
+      this.cartService.clearCart(clearCartParams).subscribe(() => {
+        console.log('Cart cleared');
+      });
+      this.router.navigate(['/orders']);
+    }, error => {
+      console.error('Error creating order:', error);
+    });
+  }
+}
+/*
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { OrderControllerService } from '../../services/order/services/order-controller.service';
+import { KeycloakService } from '../../services/keycloak/keycloak.service';
+import { CartControllerService } from '../../services/cart/services/cart-controller.service';
+
+import { ClearCart$Params } from '../../services/cart/fn/cart-controller/clear-cart';
+import {CreateOrder$Params} from '../../services/order/fn/order-controller/create-order';
+
+@Component({
+  selector: 'app-checkout',
+  templateUrl: './checkout.component.html',
+  styleUrls: ['./checkout.component.scss']
+})
+export class CheckoutComponent implements OnInit {
+  cartItems: Array<{ productId: number; productName: string; quantity: number; price: number }> = [];
+  totalAmount: number = 0;
+  username: string = '';
+  token: string = '';
+  firstName: string = '';
+  lastName: string = '';
+  email: string = '';
+
+  constructor(
+    private orderService: OrderControllerService,
+    private router: Router,
+    private keycloakService: KeycloakService,
+    private cartService: CartControllerService
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.cartItems = navigation.extras.state['cartItems'];
+      this.totalAmount = navigation.extras.state['totalAmount'];
+    }
+  }
+
+  async ngOnInit() {
+    await this.loadUserDetails();
+  }
+
+  async loadUserDetails(): Promise<void> {
+    this.username = (await this.keycloakService.getUsernameFromToken()) || '';
+    this.token = (await this.keycloakService.getToken()) || '';
+    this.firstName = this.keycloakService.getFirstName() || '';
+    this.lastName = this.keycloakService.getLastName() || '';
+    this.email = this.keycloakService.getEmail() || '';
+  }
+
+  onSubmit(): void {
+    const orderRequest = {
+      reference: 'ORDER-REF-001',
+      products: this.cartItems.map(item => ({ productId: item.productId, quantity: item.quantity })),
+      totalAmount: this.totalAmount,
+    };
+
+    const paymentRequest = {
+      paymentMethod: 'CREDIT_CARD',
+      reference: 'ORDER-REF-001',
+      paymentDetails: {
+        cardNumber: '4111111111111111',
+        cardExpiry: '12/25',
+        cardCVC: '123',
+      }
+    };
+
+    const newOrder: CreateOrder$Params = {
+      Authorization: `Bearer ${this.token}`,
+      'X-Username': this.username,
+      'X-FirstName': this.firstName,
+      'X-LastName': this.lastName,
+      'X-Email': this.email,
+      body: {
+        orderRequest,
+        paymentRequest
+      }
+    };
+
+    this.orderService.createOrder(newOrder).subscribe(response => {
+      console.log('Order created:', response);
+      const clearCartParams: ClearCart$Params = {
+        Authorization: `Bearer ${this.token}`,
+        'X-Username': this.username
+      };
+      this.cartService.clearCart(clearCartParams).subscribe(() => {
+        console.log('Cart cleared');
+      });
+      this.router.navigate(['/orders']);
+    }, error => {
+      console.error('Error creating order:', error);
+    });
+  }
+}
+*/
+/*
 import {Component, inject, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -92,6 +287,8 @@ export class CheckoutComponent implements OnInit {
     const totalAmount = this.cartItems.reduce((total, item) => total + (item.quantity * item.price), 0);
     this.checkoutForm.patchValue({ totalAmount });
   }
+
+  */
 /*
   // Handle the checkout process
   checkout(): void {
@@ -121,14 +318,14 @@ export class CheckoutComponent implements OnInit {
       console.log('Form is invalid');
     }
   }*/
-
+/*
   // Handle payment
   makePayment(): void {
     console.log('Processing payment...');
     // Call your payment processing method here (e.g., integration with a payment gateway)
   }
 
-
+*/
 /*
 
 import { Component, OnInit } from '@angular/core';
@@ -271,4 +468,4 @@ export class CheckoutComponent implements OnInit {
   */
 
 
-}
+//}
