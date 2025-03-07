@@ -100,6 +100,18 @@ export class KeycloakService {
     }
     return undefined;
   }
+
+  getFirstName(): string | undefined {
+    return this.userProfile ? this.userProfile.given_name : undefined;
+  }
+
+  getLastName(): string | undefined {
+    return this.userProfile ? this.userProfile.family_name : undefined;
+  }
+
+  getEmail(): string | undefined {
+    return this.userProfile ? this.userProfile.email : undefined;
+  }
 }
 /*
 
