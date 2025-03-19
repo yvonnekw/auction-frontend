@@ -1,0 +1,12 @@
+<div *ngIf="loading">Loading...</div>
+<div *ngIf="error">{{ error }}</div>
+<div *ngIf="!loading && !error">
+  <h1>Items on sell</h1>
+  <ul>
+    <li *ngFor="let product of products">
+      <h2>{{ product.productName }}</h2>
+      <p>{{ product.description }}</p>
+      <p>Price: {{ product.buyNowPrice }}</p>
+    </li>
+  </ul>
+</div>
