@@ -11,17 +11,21 @@ import { RequestBuilder } from '../../request-builder';
 import { OrderResponse } from '../../models/order-response';
 
 export interface FindByOrderId$Params {
+  Authorization: string;
+  'Idempotency-Key': string;
   'order-id': number;
 }
 
 export function findByOrderId(http: HttpClient, rootUrl: string, params: FindByOrderId$Params, context?: HttpContext): Observable<StrictHttpResponse<OrderResponse>> {
   const rb = new RequestBuilder(rootUrl, findByOrderId.PATH, 'get');
   if (params) {
+    rb.header('Authorization', params.Authorization, {});
+    rb.header('Idempotency-Key', params['Idempotency-Key'], {});
     rb.path('order-id', params['order-id'], {});
   }
 
   return http.request(
-    rb.build({ responseType: 'blob', accept: '*/*', context })
+    rb.build({ responseType: 'json', accept: '*/*', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {

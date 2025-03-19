@@ -1,8 +1,10 @@
 <h2>Your Profile</h2>
 <div *ngIf="userProfile">
   <p><strong>Username:</strong> {{ userProfile.preferred_username }}</p>
-  <p><strong>First Name:</strong> {{ userProfile.firstName }}</p>
-  <p><strong>Last Name:</strong> {{ userProfile.lastName }}</p>
+  <p><strong>First Name:</strong> {{ userProfile.given_name }}</p>
+  <p><strong>Last Name:</strong> {{ userProfile.family_name }}</p>
   <p><strong>Email:</strong> {{ userProfile.email }}</p>
+  <button class="btn btn-primary" (click)="editProfile()">Edit Profile</button>
+  <button type="button" (click)="onCancel()">Cancel</button>
 </div>
 

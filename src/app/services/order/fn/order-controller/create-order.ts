@@ -16,6 +16,7 @@ export interface CreateOrder$Params {
   'X-FirstName': string;
   'X-LastName': string;
   'X-Email': string;
+  'Idempotency-Key': string;
       body: OrderPaymentRequest
 }
 
@@ -27,6 +28,7 @@ export function createOrder(http: HttpClient, rootUrl: string, params: CreateOrd
     rb.header('X-FirstName', params['X-FirstName'], {});
     rb.header('X-LastName', params['X-LastName'], {});
     rb.header('X-Email', params['X-Email'], {});
+    rb.header('Idempotency-Key', params['Idempotency-Key'], {});
     rb.body(params.body, 'application/json');
   }
 

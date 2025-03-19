@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
-import { CartControllerService } from '../../services/cart/services/cart-controller.service';
-import { KeycloakService } from '../../services/keycloak/keycloak.service';
-import { GetCartItems$Params } from '../../services/cart/fn/cart-controller/get-cart-items';
+import {CartControllerService} from '../../services/cart/services/cart-controller.service';
+import {KeycloakService} from '../../services/keycloak/keycloak.service';
+import {GetCartItems$Params} from '../../services/cart/fn/cart-controller/get-cart-items';
 import {CommonModule, NgFor, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
@@ -28,7 +28,8 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     private cartControllerService: CartControllerService,
     private keycloakService: KeycloakService
-  ) {}
+  ) {
+  }
 
   async ngOnInit() {
     this.isLoggedIn = await this.keycloakService.isLoggedIn();
@@ -60,8 +61,20 @@ export class NavbarComponent implements OnInit {
     );
   }
 
+  navigateToProfile(): void {
+    const profile = this.keycloakService.getUserProfileData();
+    if (profile) {
+      console.log(profile);
+      this.router.navigate(['/profile']);
+    } else {
+      console.error('User profile is not available');
+    }
+  }
+
+
+
   onSearch(): void {
-    this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
+    this.router.navigate(['/search'], {queryParams: {query: this.searchQuery}});
   }
 
   login(): void {
@@ -80,6 +93,7 @@ export class NavbarComponent implements OnInit {
     // Implement remove item functionality
   }
 }
+
 /*
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -840,73 +854,73 @@ export class NavbarComponent implements OnInit {
   }
 
 */
-  /*
-    async ngOnInit(): Promise<void> {
-      await this.checkLoginStatus();
-      try {
-        const username = await this.keycloakService.getUsernameFromToken();
-        const token = await this.keycloakService.getToken();
+/*
+  async ngOnInit(): Promise<void> {
+    await this.checkLoginStatus();
+    try {
+      const username = await this.keycloakService.getUsernameFromToken();
+      const token = await this.keycloakService.getToken();
 
-        if (!username) {
-          console.error('Username not found in token.');
-          return;
-        }
-
-        console.log('username:', username);
-        console.log('token:', token);
-
-        const params: GetCartItems$Params = {
-          'Authorization': `Bearer ${token}`,
-          'X-Username': username, // No need for `!` because we already checked it
-        };
-
-        this.cartControllerService.getCartItems(params).pipe(
-          map(cart =>
-            (cart.items || []).reduce((count, item) => count + (item.quantity || 0), 0)
-          )
-        ).subscribe({
-          next: (count) => {
-            this.cartItemCount = count;
-          },
-          error: (err) => {
-            console.error('Error fetching cart items:', err);
-          }
-        });
-
-      } catch (error) {
-        console.error('Error fetching token or username:', error);
+      if (!username) {
+        console.error('Username not found in token.');
+        return;
       }
+
+      console.log('username:', username);
+      console.log('token:', token);
+
+      const params: GetCartItems$Params = {
+        'Authorization': `Bearer ${token}`,
+        'X-Username': username, // No need for `!` because we already checked it
+      };
+
+      this.cartControllerService.getCartItems(params).pipe(
+        map(cart =>
+          (cart.items || []).reduce((count, item) => count + (item.quantity || 0), 0)
+        )
+      ).subscribe({
+        next: (count) => {
+          this.cartItemCount = count;
+        },
+        error: (err) => {
+          console.error('Error fetching cart items:', err);
+        }
+      });
+
+    } catch (error) {
+      console.error('Error fetching token or username:', error);
     }
-
-  */
-
-  /*
-  async checkLoginStatus(): Promise<void> {
-    this.isLoggedIn = await this.keycloakService.isAuthenticated();
-    if (this.isLoggedIn) {
-      this.username = await this.keycloakService.getUsernameFromToken();
-      this.userProfile = this.keycloakService.getUserProfileData();
-    }
   }
 
-  onSearch(): void {
-    if (this.searchQuery.trim()) {
-      // Redirect to the search results page with query params
-      this.router.navigate(['/search'], {queryParams: {query: this.searchQuery}});
-    }
-  }
+*/
 
-  login(): void {
-    this.keycloakService.login();
+/*
+async checkLoginStatus(): Promise<void> {
+  this.isLoggedIn = await this.keycloakService.isAuthenticated();
+  if (this.isLoggedIn) {
+    this.username = await this.keycloakService.getUsernameFromToken();
+    this.userProfile = this.keycloakService.getUserProfileData();
   }
+}
 
-  register(): void {
-    this.keycloakService.register();
+onSearch(): void {
+  if (this.searchQuery.trim()) {
+    // Redirect to the search results page with query params
+    this.router.navigate(['/search'], {queryParams: {query: this.searchQuery}});
   }
+}
 
-  logout(): void {
-    this.keycloakService.logout();
-  }
+login(): void {
+  this.keycloakService.login();
+}
+
+register(): void {
+  this.keycloakService.register();
+}
+
+logout(): void {
+  this.keycloakService.logout();
+}
 }
 */
 /*

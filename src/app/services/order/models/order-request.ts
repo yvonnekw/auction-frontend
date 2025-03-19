@@ -4,7 +4,8 @@
 
 import { PurchaseRequest } from '../models/purchase-request';
 export interface OrderRequest {
+  buyerUsername?: string;
+  orderReference?: string;
   products: Array<PurchaseRequest>;
-  reference?: string;
   totalAmount?: number;
 }

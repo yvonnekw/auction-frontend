@@ -17,7 +17,7 @@ export interface UpdateProduct$Params {
 }
 
 export function updateProduct(http: HttpClient, rootUrl: string, params: UpdateProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-  const rb = new RequestBuilder(rootUrl, updateProduct.PATH, 'put');
+  const rb = new RequestBuilder(rootUrl, updateProduct.PATH, 'patch');
   if (params) {
     rb.header('Authorization', params.Authorization, {});
     rb.path('productId', params.productId, {});

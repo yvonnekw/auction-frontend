@@ -1,4 +1,3 @@
-
 {
   "openapi": "3.0.1",
   "info": {
@@ -68,7 +67,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PaymentRequest"
+                "$ref": "#/components/schemas/OrderPaymentRequest"
               }
             }
           },
@@ -154,6 +153,16 @@
           "payment-controller"
         ],
         "operationId": "getAllPayments",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -217,6 +226,40 @@
   },
   "components": {
     "schemas": {
+      "OrderPaymentRequest": {
+        "type": "object",
+        "properties": {
+          "paymentRequest": {
+            "$ref": "#/components/schemas/PaymentRequest"
+          },
+          "orderRequest": {
+            "$ref": "#/components/schemas/OrderRequest"
+          }
+        }
+      },
+      "OrderRequest": {
+        "required": [
+          "products"
+        ],
+        "type": "object",
+        "properties": {
+          "orderReference": {
+            "type": "string"
+          },
+          "totalAmount": {
+            "type": "number"
+          },
+          "buyerUsername": {
+            "type": "string"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PurchaseRequest"
+            }
+          }
+        }
+      },
       "PaymentRequest": {
         "type": "object",
         "properties": {
@@ -232,23 +275,24 @@
               "BITCOIN"
             ]
           },
-          "orderId": {
+          "isSuccessful": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PurchaseRequest": {
+        "required": [
+          "productId"
+        ],
+        "type": "object",
+        "properties": {
+          "productId": {
             "type": "integer",
             "format": "int64"
           },
-          "orderReference": {
-            "type": "string"
-          },
-          "createdDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "lastModifiedDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "isSuccessful": {
-            "type": "boolean"
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -326,9 +370,8 @@
               "BITCOIN"
             ]
           },
-          "orderId": {
-            "type": "integer",
-            "format": "int64"
+          "orderReference": {
+            "type": "string"
           },
           "username": {
             "type": "string"

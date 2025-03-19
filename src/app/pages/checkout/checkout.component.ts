@@ -3,10 +3,13 @@ import { Router } from '@angular/router';
 import { OrderControllerService } from '../../services/order/services/order-controller.service';
 import { KeycloakService } from '../../services/keycloak/keycloak.service';
 import { CartControllerService } from '../../services/cart/services/cart-controller.service';
-
+import  { PaymentRequest } from '../../services/order/models/payment-request'
 import { ClearCart$Params } from '../../services/cart/fn/cart-controller/clear-cart';
 import { CreateOrder$Params } from '../../services/order/fn/order-controller/create-order';
 import {CommonModule, NgFor, NgIf} from '@angular/common';
+import {OrderPaymentRequest} from '../../services/order/models/order-payment-request';
+import {OrderRequest} from '../../services/order/models/order-request';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-checkout',
@@ -41,6 +44,8 @@ export class CheckoutComponent implements OnInit {
     await this.loadUserDetails();
   }
 
+
+
   async loadUserDetails(): Promise<void> {
     this.username = (await this.keycloakService.getUsernameFromToken()) || '';
     this.token = (await this.keycloakService.getToken()) || '';
@@ -50,12 +55,12 @@ export class CheckoutComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const orderRequest = {
-      reference: 'ORDER-REF-001',
+    const orderRequest:  OrderRequest = {
+      //reference: 'ORDER-REF-001',
       products: this.cartItems.map(item => ({ productId: item.productId, quantity: item.quantity })),
       totalAmount: this.totalAmount,
     };
-
+/*
     const paymentRequest = {
       paymentMethod: 'CREDIT_CARD',
       reference: 'ORDER-REF-001',
@@ -64,12 +69,20 @@ export class CheckoutComponent implements OnInit {
         cardExpiry: '12/25',
         cardCVC: '123',
       }
-    };
+    };*/
 
-    const param ={
+    const paymentRequest: PaymentRequest = {
+      amount: this.totalAmount,
+      isSuccessful: true,
+      paymentMethod:  'CREDIT_CARD'
+    }
+
+    const body: OrderPaymentRequest ={
       orderRequest,
       paymentRequest
     }
+
+    const idempotencyKey = uuidv4();
 
     const newOrder: CreateOrder$Params = {
       Authorization: `Bearer ${this.token}`,
@@ -77,10 +90,8 @@ export class CheckoutComponent implements OnInit {
       'X-FirstName': this.firstName,
       'X-LastName': this.lastName,
       'X-Email': this.email,
-      body: {
-        orderRequest,
-        paymentRequest
-      }
+      'Idempotency-Key': idempotencyKey,
+        body
     };
 
     this.orderService.createOrder(newOrder).subscribe(response => {

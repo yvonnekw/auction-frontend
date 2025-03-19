@@ -8,7 +8,7 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { PaymentRequest } from '../../models/payment-request';
+import { OrderPaymentRequest } from '../../models/order-payment-request';
 import { PaymentResponse } from '../../models/payment-response';
 
 export interface ProcessPayment$Params {
@@ -17,7 +17,7 @@ export interface ProcessPayment$Params {
   'X-FirstName': string;
   'X-LastName': string;
   'X-Email': string;
-      body: PaymentRequest
+      body: OrderPaymentRequest
 }
 
 export function processPayment(http: HttpClient, rootUrl: string, params: ProcessPayment$Params, context?: HttpContext): Observable<StrictHttpResponse<PaymentResponse>> {
@@ -32,7 +32,7 @@ export function processPayment(http: HttpClient, rootUrl: string, params: Proces
   }
 
   return http.request(
-    rb.build({ responseType: 'json', accept: '*/*', context })
+    rb.build({ responseType: 'blob', accept: '*/*', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {

@@ -4,6 +4,9 @@
 
 export { InvoiceRequest } from './models/invoice-request';
 export { InvoiceResponse } from './models/invoice-response';
+export { OrderPaymentRequest } from './models/order-payment-request';
+export { OrderRequest } from './models/order-request';
 export { Payment } from './models/payment';
 export { PaymentRequest } from './models/payment-request';
 export { PaymentResponse } from './models/payment-response';
+export { PurchaseRequest } from './models/purchase-request';

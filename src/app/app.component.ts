@@ -35,7 +35,8 @@ import {SellingComponent} from './pages/selling/selling.component';
     RouterLinkActive,
     HttpClientJsonpModule,
     OrdersComponent,
-  SellingComponent],
+  SellingComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

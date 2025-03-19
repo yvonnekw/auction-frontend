@@ -4,10 +4,6 @@
 
 export interface PaymentRequest {
   amount?: number;
-  createdDate?: string;
   isSuccessful?: boolean;
-  lastModifiedDate?: string;
-  orderId?: number;
-  orderReference?: string;
   paymentMethod?: 'PAYPAL' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'BITCOIN';
 }
