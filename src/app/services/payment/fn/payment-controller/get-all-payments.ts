@@ -11,11 +11,13 @@ import { RequestBuilder } from '../../request-builder';
 import { Payment } from '../../models/payment';
 
 export interface GetAllPayments$Params {
+  Authorization: string;
 }
 
-export function getAllPayments(http: HttpClient, rootUrl: string, params?: GetAllPayments$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Payment>>> {
+export function getAllPayments(http: HttpClient, rootUrl: string, params: GetAllPayments$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Payment>>> {
   const rb = new RequestBuilder(rootUrl, getAllPayments.PATH, 'get');
   if (params) {
+    rb.header('Authorization', params.Authorization, {});
   }
 
   return http.request(

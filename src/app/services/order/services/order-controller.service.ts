@@ -17,6 +17,8 @@ import { findAllOrders } from '../fn/order-controller/find-all-orders';
 import { FindAllOrders$Params } from '../fn/order-controller/find-all-orders';
 import { findByOrderId } from '../fn/order-controller/find-by-order-id';
 import { FindByOrderId$Params } from '../fn/order-controller/find-by-order-id';
+import { findOrdersByUsername } from '../fn/order-controller/find-orders-by-username';
+import { FindOrdersByUsername$Params } from '../fn/order-controller/find-orders-by-username';
 import { getPayment } from '../fn/order-controller/get-payment';
 import { GetPayment$Params } from '../fn/order-controller/get-payment';
 import { OrderResponse } from '../models/order-response';
@@ -102,6 +104,31 @@ export class OrderControllerService extends BaseService {
     );
   }
 
+  /** Path part for operation `findOrdersByUsername()` */
+  static readonly FindOrdersByUsernamePath = '/api/v1/orders/username';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `findOrdersByUsername()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findOrdersByUsername$Response(params: FindOrdersByUsername$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<OrderResponse>>> {
+    return findOrdersByUsername(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `findOrdersByUsername$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findOrdersByUsername(params: FindOrdersByUsername$Params, context?: HttpContext): Observable<Array<OrderResponse>> {
+    return this.findOrdersByUsername$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<OrderResponse>>): Array<OrderResponse> => r.body)
+    );
+  }
+
   /** Path part for operation `findAllOrders()` */
   static readonly FindAllOrdersPath = '/api/v1/orders/get-all-orders';
 
@@ -111,7 +138,7 @@ export class OrderControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findAllOrders$Response(params?: FindAllOrders$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<OrderResponse>>> {
+  findAllOrders$Response(params: FindAllOrders$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<OrderResponse>>> {
     return findAllOrders(this.http, this.rootUrl, params, context);
   }
 
@@ -121,7 +148,7 @@ export class OrderControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findAllOrders(params?: FindAllOrders$Params, context?: HttpContext): Observable<Array<OrderResponse>> {
+  findAllOrders(params: FindAllOrders$Params, context?: HttpContext): Observable<Array<OrderResponse>> {
     return this.findAllOrders$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<OrderResponse>>): Array<OrderResponse> => r.body)
     );

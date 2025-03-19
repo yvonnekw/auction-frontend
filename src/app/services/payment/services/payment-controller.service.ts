@@ -85,7 +85,7 @@ export class PaymentControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getAllPayments$Response(params?: GetAllPayments$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Payment>>> {
+  getAllPayments$Response(params: GetAllPayments$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Payment>>> {
     return getAllPayments(this.http, this.rootUrl, params, context);
   }
 
@@ -95,7 +95,7 @@ export class PaymentControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getAllPayments(params?: GetAllPayments$Params, context?: HttpContext): Observable<Array<Payment>> {
+  getAllPayments(params: GetAllPayments$Params, context?: HttpContext): Observable<Array<Payment>> {
     return this.getAllPayments$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<Payment>>): Array<Payment> => r.body)
     );

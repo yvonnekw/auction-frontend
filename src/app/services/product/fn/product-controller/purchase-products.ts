@@ -11,6 +11,7 @@ import { RequestBuilder } from '../../request-builder';
 
 export interface PurchaseProducts$Params {
   Authorization: string;
+  'Idempotency-Key': string;
       body: {
 }
 }
@@ -20,6 +21,7 @@ export function purchaseProducts(http: HttpClient, rootUrl: string, params: Purc
   const rb = new RequestBuilder(rootUrl, purchaseProducts.PATH, 'post');
   if (params) {
     rb.header('Authorization', params.Authorization, {});
+    rb.header('Idempotency-Key', params['Idempotency-Key'], {});
     rb.body(params.body, 'application/json');
   }
 

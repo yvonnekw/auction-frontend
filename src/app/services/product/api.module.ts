@@ -6,8 +6,8 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
-import { ProductControllerService } from './services/product-controller.service';
 import { CategoryControllerService } from './services/category-controller.service';
+import { ProductControllerService } from './services/product-controller.service';
 import { BidControllerService } from './services/bid-controller.service';
 
 /**
@@ -18,8 +18,8 @@ import { BidControllerService } from './services/bid-controller.service';
   exports: [],
   declarations: [],
   providers: [
-    ProductControllerService,
     CategoryControllerService,
+    ProductControllerService,
     BidControllerService,
     ApiConfiguration
   ],

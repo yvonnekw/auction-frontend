@@ -11,77 +11,6 @@
     }
   ],
   "paths": {
-    "/api/v1/products/{productId}": {
-      "get": {
-        "tags": [
-          "product-controller"
-        ],
-        "operationId": "getProductById",
-        "parameters": [
-          {
-            "name": "productId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductCartResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "product-controller"
-        ],
-        "operationId": "updateProduct",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "productId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductResponse"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/v1/categories/{id}": {
       "get": {
         "tags": [
@@ -215,6 +144,14 @@
         "parameters": [
           {
             "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
             "in": "header",
             "required": true,
             "schema": {
@@ -372,6 +309,77 @@
         }
       }
     },
+    "/api/v1/products/{productId}": {
+      "get": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "getProductById",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductCartResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductResponse"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/products": {
       "get": {
         "tags": [
@@ -402,6 +410,47 @@
           {
             "name": "query",
             "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/get-user-products": {
+      "get": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "getProductsForUser",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Username",
+            "in": "header",
             "required": true,
             "schema": {
               "type": "string"
@@ -630,56 +679,6 @@
   },
   "components": {
     "schemas": {
-      "ProductResponse": {
-        "type": "object",
-        "properties": {
-          "productId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "username": {
-            "type": "string"
-          },
-          "productName": {
-            "type": "string"
-          },
-          "brandName": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "productImageUrl": {
-            "type": "string"
-          },
-          "startingPrice": {
-            "type": "number"
-          },
-          "buyNowPrice": {
-            "type": "number"
-          },
-          "colour": {
-            "type": "string"
-          },
-          "productSize": {
-            "type": "string"
-          },
-          "quantity": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "isAvailableForBuyNow": {
-            "type": "boolean"
-          },
-          "isSold": {
-            "type": "boolean"
-          },
-          "categoryId": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
       "Category": {
         "type": "object",
         "properties": {
@@ -735,13 +734,6 @@
           },
           "buyNowPrice": {
             "type": "number"
-          },
-          "boughtOnBuyNow": {
-            "type": "boolean"
-          },
-          "bidStartTime": {
-            "type": "string",
-            "format": "date-time"
           },
           "username": {
             "type": "string"
@@ -808,6 +800,56 @@
           }
         }
       },
+      "ProductResponse": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "brandName": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "productImageUrl": {
+            "type": "string"
+          },
+          "startingPrice": {
+            "type": "number"
+          },
+          "buyNowPrice": {
+            "type": "number"
+          },
+          "colour": {
+            "type": "string"
+          },
+          "productSize": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isAvailableForBuyNow": {
+            "type": "boolean"
+          },
+          "isSold": {
+            "type": "boolean"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "BidRequest": {
         "type": "object",
         "properties": {
@@ -844,22 +886,27 @@
         }
       },
       "ProductCartResponse": {
-        "required": [
-          "productId",
-          "quantity"
-        ],
         "type": "object",
         "properties": {
           "productId": {
             "type": "integer",
             "format": "int64"
           },
+          "productName": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "productImageUrl": {
+            "type": "string"
+          },
+          "getBuyNowPrice": {
+            "type": "number"
+          },
           "quantity": {
             "type": "integer",
             "format": "int32"
-          },
-          "price": {
-            "type": "number"
           }
         }
       },

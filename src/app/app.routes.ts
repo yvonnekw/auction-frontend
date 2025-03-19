@@ -14,6 +14,9 @@ import {PaymentComponent} from './pages/payment/payment.component';
 import {OrdersComponent} from './pages/orders/orders.component';
 import {SellingComponent} from './pages/selling/selling.component';
 import {ListItemComponent} from './pages/list-item/list-item.component';
+import {ProfileComponent} from './pages/profile/profile.component';
+import {EditProfileComponent} from './pages/edit-profile/edit-profile.component';
+import {UserItemsComponent} from './pages/user-items/user-items.component';
 
 export const routes: Routes = [
   {
@@ -37,6 +40,16 @@ export const routes: Routes = [
   {
     path: 'buy-now',
     component: BuyNowComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'edit-profile',
+    component: EditProfileComponent,
     canActivate: [AuthGuard]
   },
   {
@@ -81,6 +94,11 @@ export const routes: Routes = [
   {
     path: 'list-item',
     component: ListItemComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'user-items',
+    component: UserItemsComponent,
     canActivate: [AuthGuard]
   },
   {

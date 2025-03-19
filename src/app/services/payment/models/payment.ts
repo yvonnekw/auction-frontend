@@ -6,7 +6,7 @@ export interface Payment {
   amount?: number;
   createdDate?: string;
   lastModifiedDate?: string;
-  orderId?: number;
+  orderReference?: string;
   paymentId?: number;
   paymentMethod?: 'PAYPAL' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'BITCOIN';
   username?: string;
