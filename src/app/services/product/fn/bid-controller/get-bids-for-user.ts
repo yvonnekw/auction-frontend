@@ -8,14 +8,14 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { Bid } from '../../models/bid';
+import { BidResponse } from '../../models/bid-response';
 
 export interface GetBidsForUser$Params {
   Authorization: string;
   'X-Username': string;
 }
 
-export function getBidsForUser(http: HttpClient, rootUrl: string, params: GetBidsForUser$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Bid>>> {
+export function getBidsForUser(http: HttpClient, rootUrl: string, params: GetBidsForUser$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<BidResponse>>> {
   const rb = new RequestBuilder(rootUrl, getBidsForUser.PATH, 'get');
   if (params) {
     rb.header('Authorization', params.Authorization, {});
@@ -23,11 +23,11 @@ export function getBidsForUser(http: HttpClient, rootUrl: string, params: GetBid
   }
 
   return http.request(
-    rb.build({ responseType: 'blob', accept: '*/*', context })
+    rb.build({ responseType: 'json', accept: '*/*', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<Bid>>;
+      return r as StrictHttpResponse<Array<BidResponse>>;
     })
   );
 }

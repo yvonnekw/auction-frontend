@@ -5,11 +5,11 @@
       <p>Order ID: {{ order.orderId }}</p>
       <p>Order Reference: {{ order.reference }}</p>
       <p>Total Amount: ${{ order.totalAmount }}</p>
-      <div *ngFor="let product of order.purchasedProducts">
+      <div *ngFor="let product of order.orderLineResponse">
         <p>Product ID: {{ product.productId }}</p>
         <p>Product Name: {{ product.productName }}</p>
         <p>Description: {{ product.description }}</p>
-        <p>Price: ${{ product.price }}</p>
+        <p>Price: ${{ product.buyNowPrice }}</p>
         <p>Quantity: {{ product.quantity }}</p>
       </div>
     </div>

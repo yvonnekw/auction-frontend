@@ -13,7 +13,6 @@ import { OrderResponse } from '../../models/order-response';
 export interface FindOrdersByUsername$Params {
   Authorization: string;
   'X-Username': string;
-  'Idempotency-Key': string;
 }
 
 export function findOrdersByUsername(http: HttpClient, rootUrl: string, params: FindOrdersByUsername$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<OrderResponse>>> {
@@ -21,7 +20,6 @@ export function findOrdersByUsername(http: HttpClient, rootUrl: string, params: 
   if (params) {
     rb.header('Authorization', params.Authorization, {});
     rb.header('X-Username', params['X-Username'], {});
-    rb.header('Idempotency-Key', params['Idempotency-Key'], {});
   }
 
   return http.request(
