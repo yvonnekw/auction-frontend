@@ -22,7 +22,6 @@ export class CreateProductComponent {
 
     onSubmit() {
       console.log('Product submitted:', this.product);
-      // Logic to handle form submission can go here
     }
 
 }

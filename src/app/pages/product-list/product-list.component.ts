@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductControllerService } from '../../services/product/services/product-controller.service'; // Import your service
-import { ApiConfiguration } from '../../services/shared/api-configuration';
+//import { ApiConfiguration } from '../../services/shared/api-configuration';
 import {NgFor, NgIf} from '@angular/common';
 
 interface Product {
@@ -23,14 +23,13 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductControllerService,
-    private apiConfig: ApiConfiguration
+    //private apiConfig: ApiConfiguration
   ) {}
 
   ngOnInit(): void {
     this.fetchProducts();
   }
   fetchProducts(): void {
-    // Use the product service to fetch products
     this.productService.getAllProducts().subscribe(
       (response) => {
         this.products = response;

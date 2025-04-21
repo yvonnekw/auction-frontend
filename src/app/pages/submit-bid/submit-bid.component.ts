@@ -3,13 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Product } from '../../services/product/models/product';
 import { KeycloakService } from '../../services/keycloak/keycloak.service';
-import { BidRequest } from '../../services/product/models/bid-request'; // Import BidRequest
-import { ApiConfiguration } from '../../services/order/api-configuration'; // Import ApiConfiguration
+import { BidRequest } from '../../services/product/models/bid-request';
+import { ApiConfiguration } from '../../services/order/api-configuration';
 import { CommonModule, CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {BidControllerService} from '../../services/product/services/bid-controller.service';
 import {SubmitBid$Params} from '../../services/product/fn/bid-controller/submit-bid';
-import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
+
 
 @Component({
   selector: 'app-submit-bid',

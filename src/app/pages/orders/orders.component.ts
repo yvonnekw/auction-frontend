@@ -40,7 +40,6 @@ export class OrdersComponent implements OnInit {
       }
 
       const idempotencyKey = uuidv4();
-      // Ensure you're passing the correct params to findOrdersByUsername
       const params: FindOrdersByUsername$Params = {
         Authorization: `Bearer ${token}`,
         'X-Username': username,
