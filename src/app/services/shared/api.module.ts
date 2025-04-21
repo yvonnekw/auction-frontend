@@ -6,14 +6,11 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
-import { UsersControllerService } from '../user/services/users-controller.service';
-import { AuthenticationControllerService } from '../user/services/authentication-controller.service';
 import { ProductControllerService } from '../product/services/product-controller.service';
 import { PaymentControllerService } from '../payment/services/payment-controller.service';
 import { InvoiceControllerService } from '../payment/services/invoice-controller.service';
 import { OrderControllerService } from '../order/services/order-controller.service';
 import { OrderLineControllerService } from '../order/services/order-line-controller.service';
-import { AddressControllerService } from '../address/services/address-controller.service';
 /**
  * Module that provides all services and configuration.
  */
@@ -22,9 +19,6 @@ import { AddressControllerService } from '../address/services/address-controller
   exports: [],
   declarations: [],
   providers: [
-    UsersControllerService,
-    AuthenticationControllerService,
-    AddressControllerService,
     OrderControllerService,
     OrderLineControllerService,
     PaymentControllerService,

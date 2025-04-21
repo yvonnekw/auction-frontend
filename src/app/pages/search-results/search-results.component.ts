@@ -10,12 +10,11 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class SearchResultsComponent {
   query: string = '';
-  products: any[] = []; // Assume this will be populated from a service
+  products: any[] = [];
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    // Get the query parameter from the URL
     this.route.queryParams.subscribe(params => {
       this.query = params['query'] || '';
       this.searchProducts();
@@ -23,12 +22,7 @@ export class SearchResultsComponent {
   }
 
   searchProducts(): void {
-    // Logic to fetch search results based on this.query
     console.log('Searching for:', this.query);
-    // Example: Fetch products from your API
-    // this.productService.searchProducts(this.query).subscribe(results => {
-    //   this.products = results;
-    // });
   }
 
 }
