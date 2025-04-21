@@ -89,7 +89,7 @@ export class BidControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getBidsForUser$Response(params: GetBidsForUser$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Bid>>> {
+  getBidsForUser$Response(params: GetBidsForUser$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<BidResponse>>> {
     return getBidsForUser(this.http, this.rootUrl, params, context);
   }
 
@@ -99,9 +99,9 @@ export class BidControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getBidsForUser(params: GetBidsForUser$Params, context?: HttpContext): Observable<Array<Bid>> {
+  getBidsForUser(params: GetBidsForUser$Params, context?: HttpContext): Observable<Array<BidResponse>> {
     return this.getBidsForUser$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Array<Bid>>): Array<Bid> => r.body)
+      map((r: StrictHttpResponse<Array<BidResponse>>): Array<BidResponse> => r.body)
     );
   }
 

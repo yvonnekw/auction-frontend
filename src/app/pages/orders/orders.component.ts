@@ -44,7 +44,6 @@ export class OrdersComponent implements OnInit {
       const params: FindOrdersByUsername$Params = {
         Authorization: `Bearer ${token}`,
         'X-Username': username,
-        'Idempotency-Key': idempotencyKey,
       };
 
       this.orderControllerService.findOrdersByUsername(params).subscribe({

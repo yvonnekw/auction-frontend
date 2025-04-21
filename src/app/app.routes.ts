@@ -17,6 +17,7 @@ import {ListItemComponent} from './pages/list-item/list-item.component';
 import {ProfileComponent} from './pages/profile/profile.component';
 import {EditProfileComponent} from './pages/edit-profile/edit-profile.component';
 import {UserItemsComponent} from './pages/user-items/user-items.component';
+import {UserBidsComponent} from './pages/user-bids/user-bids.component';
 
 export const routes: Routes = [
   {
@@ -99,6 +100,11 @@ export const routes: Routes = [
   {
     path: 'user-items',
     component: UserItemsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'user-bids',
+    component: UserBidsComponent,
     canActivate: [AuthGuard]
   },
   {

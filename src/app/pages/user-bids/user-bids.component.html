@@ -1,0 +1,30 @@
+<div *ngIf="bids.length > 0; else noBids">
+  <div *ngIf="loading">Loading...</div>
+  <div *ngIf="error">{{ error }}</div>
+  <div *ngIf="!loading && !error">
+    <h1>User Bids</h1>
+    <ul>
+      <li *ngFor="let bid of bids">
+        <h2>{{ bid.productName }}</h2>
+        <p><strong>Bid Amount:</strong> {{ bid.bidAmount }}</p>
+        <p><strong>Bid Date:</strong> {{ bid.bidTime | date }}</p>
+        <p><strong>Product ID:</strong> {{ bid.productId }}</p>
+        <p><strong>Brand Name:</strong> {{ bid.brandName }}</p>
+        <p><strong>Category ID:</strong> {{ bid.categoryId }}</p>
+        <p><strong>Colour:</strong> {{ bid.colour }}</p>
+        <p><strong>Description:</strong> {{ bid.description }}</p>
+        <p><strong>Available for Buy Now:</strong> {{ bid.availableForBuyNow ? 'Yes' : 'No' }}</p>
+        <p><strong>Sold:</strong> {{ bid.sold ? 'Yes' : 'No' }}</p>
+        <p><strong>Buy Now Price:</strong> {{ bid.buyNowPrice }}</p>
+        <p><strong>Starting Price:</strong> {{ bid.startingPrice }}</p>
+        <p><strong>Product Size:</strong> {{ bid.productSize }}</p>
+        <p><strong>How many in stock:</strong> {{ bid.quantity }}</p>
+        <p><strong>Username:</strong> {{ bid.username }}</p>
+        <img *ngIf="bid.productImageUrl" [src]="bid.productImageUrl" alt="{{ bid.productName }}" class="product-image"/>
+      </li>
+    </ul>
+  </div>
+</div>
+<ng-template #noBids>
+  <p>You have not bid on any item</p>
+</ng-template>

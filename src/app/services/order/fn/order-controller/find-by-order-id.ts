@@ -12,7 +12,6 @@ import { OrderResponse } from '../../models/order-response';
 
 export interface FindByOrderId$Params {
   Authorization: string;
-  'Idempotency-Key': string;
   'order-id': number;
 }
 
@@ -20,7 +19,6 @@ export function findByOrderId(http: HttpClient, rootUrl: string, params: FindByO
   const rb = new RequestBuilder(rootUrl, findByOrderId.PATH, 'get');
   if (params) {
     rb.header('Authorization', params.Authorization, {});
-    rb.header('Idempotency-Key', params['Idempotency-Key'], {});
     rb.path('order-id', params['order-id'], {});
   }
 

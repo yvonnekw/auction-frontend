@@ -592,7 +592,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Bid"
+                    "$ref": "#/components/schemas/BidResponse"
                   }
                 }
               }
@@ -882,6 +882,44 @@
           "bidTime": {
             "type": "string",
             "format": "date-time"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "brandName": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "productImageUrl": {
+            "type": "string"
+          },
+          "startingPrice": {
+            "type": "number"
+          },
+          "buyNowPrice": {
+            "type": "number"
+          },
+          "colour": {
+            "type": "string"
+          },
+          "productSize": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isAvailableForBuyNow": {
+            "type": "boolean"
+          },
+          "isSold": {
+            "type": "boolean"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -930,6 +968,44 @@
           "bidTime": {
             "type": "string",
             "format": "date-time"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "brandName": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "productImageUrl": {
+            "type": "string"
+          },
+          "startingPrice": {
+            "type": "number"
+          },
+          "buyNowPrice": {
+            "type": "number"
+          },
+          "colour": {
+            "type": "string"
+          },
+          "productSize": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "availableForBuyNow": {
+            "type": "boolean"
+          },
+          "sold": {
+            "type": "boolean"
           }
         }
       }
