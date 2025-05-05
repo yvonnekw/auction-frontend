@@ -32,11 +32,11 @@ export class NavbarComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.isLoggedIn = await this.keycloakService.isLoggedIn();
+    this.isLoggedIn = this.keycloakService.isLoggedIn();
     if (this.isLoggedIn) {
       this.username = (await this.keycloakService.getUsernameFromToken()) || '';
       this.token = (await this.keycloakService.getToken()) || '';
-      this.loadCartItems();
+      await this.loadCartItems();
     }
   }
 
